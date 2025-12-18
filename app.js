@@ -743,14 +743,21 @@ function downloadTemplate(){
 
 function parseDateFromCSV(s){
   if(!s || typeof s !== 'string') return null;
-  // Format: yyyy-mm-dd hh:mm:ss
+  // Format: yyyy-mm-dd hh:mm:ss or dd/mm/yyyy hh:mm:ss
   const parts = s.trim().split(' ');
   if(parts.length !== 2) return null;
-  const datePart = parts[0].split('-');
+  const datePart = parts[0].includes('/') ? parts[0].split('/') : parts[0].split('-');
   const timePart = parts[1].split(':');
   if(datePart.length !== 3 || timePart.length !== 3) return null;
-  const [yyyy, mm, dd] = datePart.map(Number);
   const [hh, min, ss] = timePart.map(Number);
+  let yyyy, mm, dd;
+  if(parts[0].includes('/')){
+    // dd/mm/yyyy
+    [dd, mm, yyyy] = datePart.map(Number);
+  } else {
+    // yyyy-mm-dd
+    [yyyy, mm, dd] = datePart.map(Number);
+  }
   const d = new Date(yyyy, mm-1, dd, hh, min, ss);
   return isNaN(d.getTime()) ? null : d.getTime();
 }
