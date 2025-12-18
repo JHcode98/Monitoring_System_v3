@@ -1,0 +1,112 @@
+:root{
+  --bg:#f4f6f8;
+  --card:#ffffff;
+  --accent:#2752a7;
+  --muted:#666;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+
+body{font-family:Segoe UI,Roboto,Arial, sans-serif;background:url(BG2.jpg); background-repeat: no-repeat ; background-size:cover; background-blend-mode: hard-light ; background-color:transparent; }
+header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:linear-gradient(90deg,#fff, #f9fbfd);border-bottom:1px solid #e6e9ee}
+header h1{margin:0;font-size:18px}
+.hidden{display:none}
+.header-right{display:flex;align-items:center;gap:12px}
+.clock{font-size:13px;color:var(--muted);padding:6px 10px;border-radius:6px;background:rgba(39,82,167,0.05)}
+main{max-width:90%;margin:18px auto;padding:0 16px}
+.card{background:var(--card);padding:4px;border-radius:8px;box-shadow:0 1px 3px rgba(6, 212, 212, 0.06);margin-bottom:2px}
+#login-section{max-width:400px;margin:0 auto;padding:20px}
+#results{overflow-x:auto}
+form{display:flex;flex-direction:column;gap:10px}
+label{font-size:13px;color:var(--muted)}
+input[type=text], input[type=password], select, input{padding:8px;border:1px solid #d6dbe6;border-radius:6px}
+button{background:var(--accent);color:#f4f7f8;border:0;padding:8px 12px;border-radius:6px;cursor:pointer}
+button:hover{background:#01030a}
+button[disabled]{opacity:0.6;cursor:default}
+.muted{color:var(--muted);font-size:13px}
+.controls{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.controls .right{display:flex;gap:8px;align-items:center}
+#docs-table{width:100%;border-collapse:collapse ; margin-right: auto;}
+#docs-table th, #docs-table td{padding:8px;border-bottom:1px solid #eef2f6;text-align:left}
+#docs-table th{background:#fbfdff;font-weight:600}
+.form-actions{display:flex;gap:8px}
+td.actions button{margin-right:6px;background:#2b6a2b}
+td.actions button.delete{background:#a63131}
+footer{max-width:980px;margin:6px auto;padding:6px 16px;color:var(--muted)}
+
+.age{display:inline-block;padding:4px 8px;border-radius:6px;color:#fff;font-weight:600}
+.age-good{background:#2b8a2b}
+.age-warn{background:#d08a1a}
+.age-bad{background:#b92b2b}
+
+/* Layout with sidebar */
+.layout{display:flex;gap:16px}
+.main-column{flex:1}
+#sidebar{width:280px;flex:0 0 280px}
+
+/* Status chart rows */
+.status-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.status-label{width:90px;font-weight:600}
+.status-count{width:40px;text-align:right;color:var(--muted)}
+.status-bar{flex:1;background:#eef4fb;border-radius:6px;overflow:hidden;height:14px}
+.status-bar-inner{height:100%;background:#2752a7;width:0}
+.status-revision .status-bar-inner{background:#6aa84f}
+.status-routing .status-bar-inner{background:#f6b042}
+.status-approved .status-bar-inner{background:#2b8a2b}
+.status-rejected .status-bar-inner{background:#d9534f}
+.status-row button{margin-left:6px;background:#fff;color:var(--accent);border:1px solid #e0e6f0;padding:4px 6px;border-radius:6px}
+.status-row.selected{outline:2px solid rgba(39,82,167,0.14);background:#f6f9ff}
+
+/* WINS chart styles */
+.wins-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.wins-label{width:110px;font-weight:600}
+.wins-count{width:40px;text-align:right;color:var(--muted)}
+.wins-bar{flex:1;background:#f2f7f2;border-radius:6px;overflow:hidden;height:14px}
+.wins-bar-inner{height:100%;background:#2b8a2b;width:0}
+.wins-approved .wins-bar-inner{background:#2b8a2b}
+.wins-pending .wins-bar-inner{background:#f6b042}
+.wins-rejected .wins-bar-inner{background:#d9534f}
+.wins-row button{margin-left:6px;background:#fff;color:var(--accent);border:1px solid #e0e6f0;padding:4px 6px;border-radius:6px}
+.wins-row.selected{outline:2px solid rgba(43,138,43,0.12);background:#f7fff6}
+
+/* Age overview styles */
+.age-ov-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.age-ov-label{width:110px;font-weight:600}
+.age-ov-avg{min-width:56px;padding:4px 8px;border-radius:6px;background:#eef6ff;color:#0b4da0;text-align:center;font-weight:700}
+.age-ov-buckets{flex:1;display:flex;gap:6px;align-items:center}
+.age-bucket{flex:1;background:#f1f5f9;border-radius:6px;height:12px;overflow:hidden;position:relative}
+.age-bucket-inner{height:100%;background:#6aa84f;width:0}
+.age-bucket-inner.mid{background:#f6b042}
+.age-bucket-inner.bad{background:#d9534f}
+.age-ov-count{width:36px;text-align:right;color:var(--muted)}
+.age-ov-row button{margin-left:6px;background:#fff;color:var(--accent);border:1px solid #e0e6f0;padding:4px 6px;border-radius:6px}
+.age-ov-row.selected{outline:2px solid rgba(39,82,167,0.08);background:#f6faff}
+
+/* Total documents display */
+.total-docs-display{font-size:48px;font-weight:700;text-align:center;color:var(--accent);padding:20px 0}
+
+/* Notes cell: truncate long notes and provide tooltip */
+.notes-cell{max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.notes-cell .notes-text{display:inline-block;vertical-align:middle;max-width:160px;overflow:hidden;text-overflow:ellipsis}
+.note-edit-btn{background:#fff;color:var(--accent);border:1px solid #e0e6f0;padding:2px 6px;border-radius:6px;margin-left:6px}
+.note-save-btn{background:#2b6a2b;padding:4px 6px;margin-left:6px}
+.note-cancel-btn{background:#a63131;padding:4px 6px;margin-left:6px}
+
+/* Column widths for the documents table (Control, Title, Notes, Owner, Status, WINS, Created, Updated, Age, Actions) */
+
+#docs-table th:nth-child(1), #docs-table td:nth-child(1){width:180px;max-width:180px} 
+#docs-table th:nth-child(2), #docs-table td:nth-child(2){width:220px;max-width:220px}
+#docs-table th:nth-child(3), #docs-table td:nth-child(3){width:200px;max-width:200px}
+#docs-table th:nth-child(4), #docs-table td:nth-child(4){width:120px;max-width:120px}
+#docs-table th:nth-child(5), #docs-table td:nth-child(5){width:120px;max-width:120px}
+#docs-table th:nth-child(6), #docs-table td:nth-child(6){width:140px;max-width:140px}
+#docs-table th:nth-child(7), #docs-table td:nth-child(7){width:160px;max-width:160px}
+#docs-table th:nth-child(8), #docs-table td:nth-child(8){width:260px;max-width:260px}
+#docs-table th:nth-child(9), #docs-table td:nth-child(9){width:80px;max-width:80px}
+#docs-table th:nth-child(10), #docs-table td:nth-child(10){width:120px;max-width:120px}
+
+/* Ensure truncated cells wrap appropriately where needed */
+#docs-table td{overflow:hidden;text-overflow:ellipsis}
+
+
+

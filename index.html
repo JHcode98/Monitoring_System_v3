@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<title>Document Monitoring System</title>
+		<link rel="stylesheet" href="styles.css" />
+	</head>
+	<body>
+		<header>
+			<h1>Document Monitoring System</h1>
+
+			<div class="header-right">
+				<img src="Logo.jpg" alt="Project Logo" class="logo">
+				<div id="clock" class="clock" aria-live="polite"></div>
+				<div id="user-info" class="hidden">
+					<span id="username-display"></span>
+					<button id="logout-btn">Logout</button>
+				</div>
+			</div>
+		</header>
+
+		<main>
+			<!-- Login Form -->
+			<section id="login-section" class="card">
+				<h2>Login</h2>
+				<form id="login-form">
+					<label for="username">Username</label>
+					<input id="username" name="username" required />
+
+					<label for="password">Password</label>
+					<input id="password" name="password" type="password" required />
+
+					<button type="submit">Sign In</button>
+				</form>
+				<p class="muted">Default demo credentials: <code>admin</code> / <code>password</code></p>
+			</section>
+
+			<!-- Dashboard -->
+			<section id="dashboard" class="hidden">
+				<div class="layout">
+					<div class="main-column">
+						<div class="controls">
+					<div class="left">
+						<button id="new-doc-btn">New Document</button>
+					</div>
+					<div class="right">
+						<input id="search-control" placeholder="Search control number..." />
+						<button id="search-btn">Search</button>
+						<button id="clear-search">Clear</button>
+						<input id="import-file" type="file" accept=".csv" />
+						<button id="download-template">Download Template</button>
+						<button id="export-csv">Export CSV</button>
+					</div>
+				</div>
+
+				<div id="new-doc-form" class="card hidden">
+					<h3>Add Document</h3>
+					<form id="doc-form">
+						<label for="control-number">Control Number</label>
+						<input id="control-number" name="controlNumber" placeholder="ECOM-20XX-XXXX" pattern="ECOM-[0-9]{4}-[0-9]{4}" title="Format: ECOM-YYYY-NNNN (e.g. ECOM-2025-0001)" required />
+
+						<label for="doc-title">Title</label>
+						<input id="doc-title" name="title" required />
+
+						<label for="doc-notes">Notes</label>
+						<textarea id="doc-notes" name="notes" rows="3"></textarea>
+
+						<label for="doc-owner">Owner</label>
+						<input id="doc-owner" name="owner" />
+
+						<label for="doc-status">Status</label>
+						<select id="doc-status" name="status">
+							<option>Revision</option>
+							<option>Routing</option>
+							<option>Approved</option>
+							<option>Rejected</option>
+						</select>
+
+						<label for="wins-status">WINS Status</label>
+						<select id="wins-status" name="winsStatus">
+							<option>Approved</option>
+							<option>Pending for Approve</option>
+							<option>Rejected</option>
+						</select>
+
+						<label for="created-at">Created (modify)</label>
+						<input id="created-at" name="createdAt" type="datetime-local" />
+
+						<div class="form-actions">
+							<button type="submit">Save</button>
+							<button type="button" id="cancel-new">Cancel</button>
+						</div>
+					</form>
+				</div>
+
+				<div id="results" class="card">
+					<h3>Documents</h3>
+					<table id="docs-table">
+						<thead>
+							<tr>
+								<th>Control #</th>
+								<th>Title</th>
+								<th>Notes</th>
+								<th>Owner</th>
+								<th>Status</th>
+								<th>WINS Status</th>
+								<th>Created Date</th>
+								<th>Updated Date</th>
+								<th>Age (days)</th>
+								<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+			</div>
+
+			<aside id="sidebar" class="card">
+				<h3>Total Documents</h3>
+				<div id="total-docs" class="total-docs-display" aria-hidden="false"></div>
+
+				<hr />
+				<h3>Status Overview</h3>
+				<div id="status-chart" aria-hidden="false"></div>
+				<div style="margin-top:10px;">
+					<button id="clear-status-filter">Clear Filter</button>
+				</div>
+
+				<hr />
+				<h3>WINS Overview</h3>
+				<div id="wins-chart" aria-hidden="false"></div>
+				<div style="margin-top:10px;">
+					<button id="clear-wins-filter">Clear WINS Filter</button>
+				</div>
+
+				<hr />
+				<h3>Age Overview (by Status)</h3>
+				<div id="age-overview" aria-hidden="false"></div>
+				<div style="margin-top:10px;">
+					<button id="clear-age-filter">Clear Age Filter</button>
+				</div>
+			</aside>
+		</div>
+			</section>
+		</main>
+
+		<footer>
+			<small>Local demo — data stored in your browser. <br>
+			j.hutalla.</small>
+		</footer>
+
+		<script src="app.js"></script>
+	</body>
+</html>
+
