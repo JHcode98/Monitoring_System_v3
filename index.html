@@ -8,7 +8,7 @@
 	</head>
 	<body>
 		<header>
-			<h1>Document Monitoring System </h1>
+			<h1>Document Monitoring System</h1>
 
 			<div class="header-right">
 				<img src="Logo.jpg" alt="Project Logo" class="logo">
@@ -48,6 +48,8 @@
 						<input id="search-control" placeholder="Search control number..." />
 						<button id="search-btn">Search</button>
 						<button id="clear-search">Clear</button>
+						<button id="bulk-update">Update Selected</button>
+						<button id="bulk-delete">Delete Selected</button>
 						<input id="import-file" type="file" accept=".csv" />
 						<button id="download-template">Download Template</button>
 						<button id="export-csv">Export CSV</button>
@@ -99,6 +101,7 @@
 					<table id="docs-table">
 						<thead>
 							<tr>
+								<th><input type="checkbox" id="select-all" title="Select All"></th>
 								<th>Control #</th>
 								<th>Title</th>
 								<th>Notes</th>
