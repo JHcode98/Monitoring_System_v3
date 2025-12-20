@@ -56,15 +56,19 @@ footer{max-width:980px;margin:6px auto;padding:6px 16px;color:var(--muted)}
 
 /* Sidebar toggle styles */
 .layout{display:flex;gap:16px;position:relative}
-/* Place toggle at the left side for visibility */
-.sidebar-toggle{position:absolute;left:8px;top:20px;width:34px;height:40px;border-radius:6px;border:1px solid #e6eef8;background:#ffffff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--accent);box-shadow:0 1px 3px rgba(0,0,0,0.08);z-index:2200}
-.sidebar-toggle[aria-expanded="false"]{left:8px;}
-/* When sidebar is collapsed we keep the toggle visible on the left edge */
-.left-sidebar.collapsed{width:0;min-width:0;padding:0;overflow:hidden;opacity:0;pointer-events:none}
-.left-sidebar{transition:width 200ms ease, opacity 200ms ease;position:relative}
+/* Toggle positioned as a sibling to keep it clickable when sidebar is collapsed */
+.left-sidebar{position:relative}
+.sidebar-toggle{position:absolute;left:260px;top:14px;width:34px;height:40px;border-radius:6px;border:1px solid #e6eef8;background:#ffffff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--accent);box-shadow:0 1px 3px rgba(0,0,0,0.08);z-index:2200}
+/* When sidebar is collapsed, move the toggle to the left edge */
+.left-sidebar.collapsed + .sidebar-toggle{left:4px}
+.left-sidebar.collapsed{width:0;min-width:0;padding:0;overflow:visible;opacity:0.15}
+.left-sidebar{transition:width 200ms ease, opacity 200ms ease}
 
 /* Ensure toggle moves smoothly */
 .sidebar-toggle{transition:left 200ms ease, transform 200ms ease}
+
+/* Role badge */
+.role-badge{display:inline-block;padding:4px 8px;border-radius:6px;background:#eef4ff;color:var(--accent);font-weight:700;font-size:12px}
 
 /* Login center styles */
 #login-section.centered{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2200;box-shadow:0 6px 18px rgba(0,0,0,0.12);border-radius:8px}
