@@ -34,6 +34,12 @@ let statusFilter = null; // e.g. 'Revision', 'Approved', etc.
 let winsFilter = null; // e.g. 'Approved', 'Pending for Approve', 'Rejected'
 let ageStatusFilter = null; // will mirror statusFilter when filtering by age row clicks
 
+// Sidebar search & pagination state
+let sidebarQuery = '';
+let sidebarPageSize = 8;
+let byStatusPage = 1;
+let byWinsPage = 1;
+
 function loadDocs(){
   try{ docs = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
   catch(e){ docs = []; }
@@ -224,43 +230,70 @@ function renderAgeOverview(){
 function renderLeftSidebar(){
   const byStatus = document.getElementById('approved-by-status');
   const byWins = document.getElementById('approved-by-wins');
+  const searchInput = document.getElementById('sidebar-search');
+  const pageSizeEl = document.getElementById('sidebar-page-size');
+  const byStatusPagination = document.getElementById('by-status-pagination');
+  const byWinsPagination = document.getElementById('by-wins-pagination');
   if(!byStatus || !byWins) return;
-  byStatus.innerHTML = '';
-  byWins.innerHTML = '';
+  // sync page size
+  sidebarPageSize = Number(pageSizeEl && pageSizeEl.value) || sidebarPageSize;
+  const q = (searchInput && searchInput.value || sidebarQuery || '').toLowerCase();
+
+  // Helper to render list with pagination
+  function renderList(container, items, page, paginationEl){
+    container.innerHTML = '';
+    const filtered = items.filter(d => {
+      if(!q) return true;
+      const combined = ((d.controlNumber||'') + ' ' + (d.title||'')).toLowerCase();
+      return combined.includes(q);
+    });
+    if(filtered.length === 0){
+      container.innerHTML = '<div class="muted">No documents.</div>';
+      if(paginationEl) paginationEl.innerHTML = '';
+      return;
+    }
+    const totalPages = Math.max(1, Math.ceil(filtered.length / sidebarPageSize));
+    // clamp page
+    page = Math.min(Math.max(1, page), totalPages);
+    // save back global
+    if(container === byStatus) byStatusPage = page; else byWinsPage = page;
+    const start = (page - 1) * sidebarPageSize;
+    const slice = filtered.slice(start, start + sidebarPageSize);
+    const ul = document.createElement('ul'); ul.className = 'approved-ul';
+    slice.forEach(d => {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = 'document.html?control=' + encodeURIComponent(d.controlNumber);
+      a.dataset.control = d.controlNumber;
+      a.textContent = (d.controlNumber || '') + ' — ' + (d.title || '');
+      // button to open in new tab
+      const nb = document.createElement('button'); nb.type = 'button'; nb.className = 'open-new-tab'; nb.title = 'Open in new tab'; nb.textContent = '↗'; nb.style.marginLeft = '6px';
+      nb.addEventListener('click', (ev) => { ev.stopPropagation(); ev.preventDefault(); window.open(a.href, '_blank'); });
+      li.appendChild(a);
+      li.appendChild(nb);
+      ul.appendChild(li);
+    });
+    container.appendChild(ul);
+
+    // Pagination controls
+    if(paginationEl){
+      paginationEl.innerHTML = '';
+      const prev = document.createElement('button'); prev.type = 'button'; prev.textContent = 'Prev'; prev.disabled = page <= 1;
+      prev.addEventListener('click', () => { renderList(container, items, page - 1, paginationEl); });
+      const info = document.createElement('span'); info.className = 'current-page'; info.textContent = 'Page ' + page + ' / ' + totalPages;
+      const next = document.createElement('button'); next.type = 'button'; next.textContent = 'Next'; next.disabled = page >= totalPages;
+      next.addEventListener('click', () => { renderList(container, items, page + 1, paginationEl); });
+      paginationEl.appendChild(prev); paginationEl.appendChild(info); paginationEl.appendChild(next);
+    }
+  }
 
   // Approved by Status
   const approvedByStatusDocs = docs.filter(d => d.status === 'Approved');
-  if(approvedByStatusDocs.length === 0){
-    byStatus.innerHTML = '<div class="muted">No approved documents.</div>';
-  } else {
-    const ul = document.createElement('ul'); ul.className = 'approved-ul';
-    approvedByStatusDocs.forEach(d => {
-      const li = document.createElement('li');
-      const a = document.createElement('a');
-      a.href = 'document.html?control=' + encodeURIComponent(d.controlNumber);
-      a.textContent = (d.controlNumber || '') + ' — ' + (d.title || '');
-      li.appendChild(a);
-      ul.appendChild(li);
-    });
-    byStatus.appendChild(ul);
-  }
+  renderList(byStatus, approvedByStatusDocs, byStatusPage, byStatusPagination);
 
   // Approved by WINS
   const approvedByWinsDocs = docs.filter(d => d.winsStatus === 'Approved');
-  if(approvedByWinsDocs.length === 0){
-    byWins.innerHTML = '<div class="muted">No WINS-approved documents.</div>';
-  } else {
-    const ul = document.createElement('ul'); ul.className = 'approved-ul';
-    approvedByWinsDocs.forEach(d => {
-      const li = document.createElement('li');
-      const a = document.createElement('a');
-      a.href = 'document.html?control=' + encodeURIComponent(d.controlNumber);
-      a.textContent = (d.controlNumber || '') + ' — ' + (d.title || '');
-      li.appendChild(a);
-      ul.appendChild(li);
-    });
-    byWins.appendChild(ul);
-  }
+  renderList(byWins, approvedByWinsDocs, byWinsPage, byWinsPagination);
 }
 
 function setAgeStatusFilter(status){
@@ -725,6 +758,125 @@ document.addEventListener('DOMContentLoaded', () => {
   }catch(e){
     loadDocs();
   }
+
+  // Sidebar search & page size
+  const sidebarSearch = document.getElementById('sidebar-search');
+  const sidebarPageSizeEl = document.getElementById('sidebar-page-size');
+  if(sidebarSearch){
+    sidebarSearch.addEventListener('input', debounce(() => {
+      sidebarQuery = sidebarSearch.value.trim();
+      byStatusPage = 1; byWinsPage = 1;
+      renderLeftSidebar();
+    }, 250));
+  }
+  if(sidebarPageSizeEl){
+    sidebarPageSizeEl.addEventListener('change', () => {
+      sidebarPageSize = Number(sidebarPageSizeEl.value) || sidebarPageSize;
+      byStatusPage = 1; byWinsPage = 1;
+      renderLeftSidebar();
+    });
+  }
+
+  // Modal behavior: open from sidebar link (prevent navigation), and support open-in-new-tab button
+  document.body.addEventListener('click', e => {
+    const a = e.target.closest('.approved-ul a');
+    if(a){
+      // allow modifier clicks to open in new tab/window
+      if(e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) { return; }
+      // left click opens modal
+      e.preventDefault();
+      const control = a.dataset.control || (new URL(a.href, location.href)).searchParams.get('control');
+      if(control) openDocModal(control);
+      return;
+    }
+  });
+
+  // Modal elements
+  const modal = document.getElementById('doc-modal');
+  const modalOverlay = document.getElementById('modal-overlay');
+  const modalClose = document.getElementById('modal-close');
+  const modalForm = document.getElementById('modal-doc-form');
+  const modalCancel = document.getElementById('modal-cancel');
+  const modalOpenNew = document.getElementById('modal-open-new');
+
+  function closeModal(){
+    if(modal){ modal.classList.add('hidden'); modal.setAttribute('aria-hidden','true'); }
+  }
+  function openModal(){
+    if(modal){ modal.classList.remove('hidden'); modal.setAttribute('aria-hidden','false'); }
+  }
+
+  modalClose && modalClose.addEventListener('click', closeModal);
+  modalOverlay && modalOverlay.addEventListener('click', closeModal);
+  modalCancel && modalCancel.addEventListener('click', closeModal);
+  document.addEventListener('keydown', (ev) => { if(ev.key === 'Escape') closeModal(); });
+
+  // Modal open helper
+  window.openDocModal = function(control){
+    const doc = docs.find(d => d.controlNumber === control);
+    if(!doc){ alert('Document not found'); return; }
+    // populate fields
+    document.getElementById('modal-control').value = doc.controlNumber || '';
+    document.getElementById('modal-original-control').value = doc.controlNumber || '';
+    document.getElementById('modal-title-input').value = doc.title || '';
+    document.getElementById('modal-owner').value = doc.owner || '';
+    document.getElementById('modal-status').value = doc.status || 'Revision';
+    document.getElementById('modal-wins').value = doc.winsStatus || 'Pending for Approve';
+    document.getElementById('modal-created').value = msToDatetimeLocal(doc.createdAt);
+    document.getElementById('modal-notes').value = doc.notes || '';
+    openModal();
+  };
+
+  // Open current doc in new tab from modal
+  modalOpenNew && modalOpenNew.addEventListener('click', () => {
+    const ctrl = document.getElementById('modal-control').value.trim();
+    if(ctrl) window.open('document.html?control=' + encodeURIComponent(ctrl),'_blank');
+  });
+
+  // Modal save handler
+  modalForm && modalForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    const controlNumber = document.getElementById('modal-control').value.trim();
+    const original = document.getElementById('modal-original-control').value || '';
+    const title = document.getElementById('modal-title-input').value.trim();
+    const owner = document.getElementById('modal-owner').value.trim();
+    const status = document.getElementById('modal-status').value;
+    const winsStatus = document.getElementById('modal-wins').value;
+    const notes = document.getElementById('modal-notes').value.trim();
+    const createdVal = document.getElementById('modal-created').value || '';
+    const createdMs = datetimeLocalToMs(createdVal);
+
+    // basic validation
+    if(!controlNumber || !title){ alert('Control number and title are required'); return; }
+    const ctrlRe = /^ECOM-\d{4}-\d{4}$/;
+    if(!ctrlRe.test(controlNumber)) { alert('Control Number must follow ECOM-YYYY-NNNN'); return; }
+
+    // ensure unique control number if changed
+    if(controlNumber !== original && docs.find(d => d.controlNumber === controlNumber)){
+      alert('A document with that control number already exists. Please choose another.');
+      return;
+    }
+
+    // find existing doc
+    const existingIdx = docs.findIndex(d => d.controlNumber === original);
+    let createdAtFinal = createdMs || (existingIdx >= 0 ? docs[existingIdx].createdAt : Date.now());
+    const entry = { controlNumber, title, owner, status, winsStatus, notes, createdAt: createdAtFinal, updatedAt: Date.now() };
+
+    if(existingIdx >= 0){
+      // if control changed, delete old and add new
+      if(controlNumber !== original){ deleteDoc(original); }
+      addOrUpdateDoc(entry);
+    } else {
+      addOrUpdateDoc(entry);
+    }
+    saveDocs();
+    renderDocs();
+    closeModal();
+  });
+
+  // Initialize left sidebar render on load
+  renderLeftSidebar();
+
   // start clock
   updateClock();
   setInterval(updateClock, 1000);
