@@ -112,8 +112,7 @@ function renderDocs(filter){
   renderTotalDocs();
   renderStatusChart();
   renderWinsChart();
-  renderAgeOverview();
-}
+  renderAgeOverview();  renderLeftSidebar();}
 
 function computeWinsCounts(){
   const counts = { 'Approved':0, 'Pending for Approve':0, 'Rejected':0 };
@@ -220,6 +219,48 @@ function renderAgeOverview(){
     row.appendChild(btn);
     container.appendChild(row);
   });
+}
+
+function renderLeftSidebar(){
+  const byStatus = document.getElementById('approved-by-status');
+  const byWins = document.getElementById('approved-by-wins');
+  if(!byStatus || !byWins) return;
+  byStatus.innerHTML = '';
+  byWins.innerHTML = '';
+
+  // Approved by Status
+  const approvedByStatusDocs = docs.filter(d => d.status === 'Approved');
+  if(approvedByStatusDocs.length === 0){
+    byStatus.innerHTML = '<div class="muted">No approved documents.</div>';
+  } else {
+    const ul = document.createElement('ul'); ul.className = 'approved-ul';
+    approvedByStatusDocs.forEach(d => {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = 'document.html?control=' + encodeURIComponent(d.controlNumber);
+      a.textContent = (d.controlNumber || '') + ' — ' + (d.title || '');
+      li.appendChild(a);
+      ul.appendChild(li);
+    });
+    byStatus.appendChild(ul);
+  }
+
+  // Approved by WINS
+  const approvedByWinsDocs = docs.filter(d => d.winsStatus === 'Approved');
+  if(approvedByWinsDocs.length === 0){
+    byWins.innerHTML = '<div class="muted">No WINS-approved documents.</div>';
+  } else {
+    const ul = document.createElement('ul'); ul.className = 'approved-ul';
+    approvedByWinsDocs.forEach(d => {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = 'document.html?control=' + encodeURIComponent(d.controlNumber);
+      a.textContent = (d.controlNumber || '') + ' — ' + (d.title || '');
+      li.appendChild(a);
+      ul.appendChild(li);
+    });
+    byWins.appendChild(ul);
+  }
 }
 
 function setAgeStatusFilter(status){
