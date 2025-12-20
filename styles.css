@@ -42,8 +42,19 @@ footer{max-width:980px;margin:6px auto;padding:6px 16px;color:var(--muted)}
 
 /* Layout with sidebar */
 .layout{display:flex;gap:16px}
+.left-sidebar{width:260px;flex:0 0 260px;max-height:calc(100vh - 140px);overflow:auto;padding:12px}
 .main-column{flex:1}
 #sidebar{width:280px;flex:0 0 280px}
+
+/* Approved lists in left sidebar */
+.approved-list{font-size:13px}
+.approved-list .muted{padding:6px;color:var(--muted)}
+.approved-ul{list-style:none;padding:0;margin:0}
+.approved-ul li{margin-bottom:6px}
+.approved-ul a{color:var(--accent);text-decoration:none;font-weight:600;display:block;padding:6px;border-radius:6px}
+.approved-ul a:hover{background:#f1f6ff}
+
+
 
 /* Status chart rows */
 .status-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
