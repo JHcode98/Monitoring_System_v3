@@ -423,9 +423,17 @@ function addOrUpdateDoc(doc){
   saveDocs();
 }
 
-function deleteDoc(controlNumber){
+function deleteDocInternal(controlNumber){
   docs = docs.filter(d => d.controlNumber !== controlNumber);
   saveDocs();
+}
+
+function deleteDoc(controlNumber){
+  // Enforce admin-only deletion via UI or programmatic attempts
+  let isAdmin = (currentUserRole === 'admin');
+  try{ isAdmin = isAdmin || (localStorage.getItem(AUTH_ROLE_KEY) === 'admin'); }catch(e){}
+  if(!isAdmin){ alert('Permission denied: only admin users can delete documents.'); return; }
+  deleteDocInternal(controlNumber);
 }
 
 // Auth
@@ -586,7 +594,8 @@ docForm.addEventListener('submit', e => {
       // preserve createdAt from the existing record unless user provided a valid override
       const existing = docs.find(d => d.controlNumber === editingKey);
       const createdAt = parsedCreated || (existing && existing.createdAt) || Date.now();
-      deleteDoc(editingKey);
+      // internal delete during rename (bypass admin check)
+      deleteDocInternal(editingKey);
       addOrUpdateDoc({ controlNumber, title, owner, status, winsStatus, notes, createdAt, updatedAt: Date.now() });
     } else {
       // update in-place; allow createdAt modification if provided
@@ -667,6 +676,10 @@ docsTableBody.addEventListener('click', e => {
   const del = e.target.closest('button[data-delete]');
   if(del){
     const ctrl = del.getAttribute('data-delete');
+    // check permission before prompting
+    let isAdmin = (currentUserRole === 'admin');
+    try{ if(!isAdmin && (localStorage.getItem(AUTH_ROLE_KEY) === 'admin')) isAdmin = true; }catch(e){}
+    if(!isAdmin){ alert('Permission denied: only admin may delete documents.'); return; }
     if(confirm(`Delete document ${ctrl}?`)){
       deleteDoc(ctrl);
       renderDocs();
@@ -981,7 +994,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if(existingIdx >= 0){
       // if control changed, delete old and add new
-      if(controlNumber !== original){ deleteDoc(original); }
+      if(controlNumber !== original){ deleteDocInternal(original); }
       addOrUpdateDoc(entry);
     } else {
       addOrUpdateDoc(entry);
@@ -1178,6 +1191,10 @@ function importFromCSVText(text){
 }
 
 importFileInput && importFileInput.addEventListener('change', e => {
+  // ensure only admin can import
+  let isAdmin = (currentUserRole === 'admin');
+  try{ if(!isAdmin && (localStorage.getItem(AUTH_ROLE_KEY) === 'admin')) isAdmin = true; }catch(e){}
+  if(!isAdmin){ alert('Permission denied: only admin may import CSV.'); importFileInput.value = ''; return; }
   const file = e.target.files && e.target.files[0];
   if(!file) return;
   const reader = new FileReader();
@@ -1195,10 +1212,16 @@ importFileInput && importFileInput.addEventListener('change', e => {
 });
 
 exportCsvBtn && exportCsvBtn.addEventListener('click', () => {
+  let isAdmin = (currentUserRole === 'admin');
+  try{ if(!isAdmin && (localStorage.getItem(AUTH_ROLE_KEY) === 'admin')) isAdmin = true; }catch(e){}
+  if(!isAdmin){ alert('Permission denied: only admin may export CSV.'); return; }
   exportToCSV();
 });
 
 downloadTemplateBtn && downloadTemplateBtn.addEventListener('click', () => {
+  let isAdmin = (currentUserRole === 'admin');
+  try{ if(!isAdmin && (localStorage.getItem(AUTH_ROLE_KEY) === 'admin')) isAdmin = true; }catch(e){}
+  if(!isAdmin){ alert('Permission denied: only admin may download the template.'); return; }
   downloadTemplate();
 });
 
@@ -1212,6 +1235,10 @@ selectAll && selectAll.addEventListener('change', () => {
 });
 
 bulkDeleteBtn && bulkDeleteBtn.addEventListener('click', () => {
+  // ensure only admin may perform bulk delete
+  let isAdmin = (currentUserRole === 'admin');
+  try{ if(!isAdmin && (localStorage.getItem(AUTH_ROLE_KEY) === 'admin')) isAdmin = true; }catch(e){}
+  if(!isAdmin){ alert('Permission denied: only admin can bulk delete.'); return; }
   const selected = Array.from(docsTableBody.querySelectorAll('.row-checkbox:checked')).map(cb => cb.value);
   if(selected.length === 0){
     alert('No documents selected.');
@@ -1224,6 +1251,10 @@ bulkDeleteBtn && bulkDeleteBtn.addEventListener('click', () => {
 });
 
 bulkUpdateBtn && bulkUpdateBtn.addEventListener('click', () => {
+  // only admin permitted to bulk-update
+  let isAdmin = (currentUserRole === 'admin');
+  try{ if(!isAdmin && (localStorage.getItem(AUTH_ROLE_KEY) === 'admin')) isAdmin = true; }catch(e){}
+  if(!isAdmin){ alert('Permission denied: only admin can perform bulk updates.'); return; }
   const selected = Array.from(docsTableBody.querySelectorAll('.row-checkbox:checked')).map(cb => cb.value);
   if(selected.length === 0){
     alert('No documents selected.');
