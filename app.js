@@ -332,12 +332,12 @@ function renderLeftSidebar(){
     }
   }
 
-  // Approved by Status
-  const approvedByStatusDocs = docs.filter(d => d.status === 'Approved');
+  // Routing Status
+  const approvedByStatusDocs = docs.filter(d => d.status === 'Routing');
   renderList(byStatus, approvedByStatusDocs, byStatusPage, byStatusPagination);
 
-  // Approved by WINS
-  const approvedByWinsDocs = docs.filter(d => d.winsStatus === 'Approved');
+  // Revision Status
+  const approvedByWinsDocs = docs.filter(d => d.status === 'Revision');
   renderList(byWins, approvedByWinsDocs, byWinsPage, byWinsPagination);
 
   // render admin inbox if admin
