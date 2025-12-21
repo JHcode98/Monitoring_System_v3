@@ -19,7 +19,7 @@
 					<button id="logout-btn">Logout</button>
 				</div>
 				<!-- Full documents page (all users) -->
-				<button id="documents-full-page-btn" style="display:inline-block;margin-left:8px" title="Open Full Documents View" onclick="window.location.href='documents_full.html'">Full Documents View</button>
+				<button id="documents-full-page-btn" style="display:none;margin-left:8px" title="Open Full Documents View" onclick="window.location.href='documents_full.html'">Full Documents View</button>
 				<!-- Admin Inbox page link (visible only to admin via JS) -->
 				<button id="admin-inbox-page-btn" style="display:none;margin-left:8px" title="Open Admin Inbox Page" onclick="window.location.href='admin_inbox.html'">Admin Inbox Page</button>
 			</div>
@@ -104,14 +104,19 @@
 							<option>Rejected</option>
 						</select>
 
-						<label for="created-at">Created (modify)</label>
-						<input id="created-at" name="createdAt" type="datetime-local" />
+                        <label for="doc-admin-status">Admin Status</label>
+                        <select id="doc-admin-status" name="adminStatus">
+                          <option value="">(none)</option>
+                          <option value="Received">Received</option>
+                          <option value="Returned">Returned</option>
+                        </select>
 
-						<div class="form-actions">
-							<button type="submit">Save</button>
-							<button type="button" id="cancel-new">Cancel</button>
-						</div>
-					</form>
+                        <label for="wins-status">WINS Status</label>
+                        <select id="wins-status" name="winsStatus">
+                          <option>Approved</option>
+                          <option>Pending for Approve</option>
+                          <option>Rejected</option>
+                        </select>
 				</div>
 
 
@@ -205,8 +210,12 @@
 							<option>Approved</option>
 							<option>Pending for Approve</option>
 							<option>Rejected</option>
-						</select>
-						<label>Created</label>
+						</select>					<label>Admin Status</label>
+					<select id="modal-admin-status" name="adminStatus">
+						<option value="">(none)</option>
+						<option value="Received">Received</option>
+						<option value="Returned">Returned</option>
+					</select>						<label>Created</label>
 						<input id="modal-created" name="createdAt" type="datetime-local" />
 						<label>Notes</label>
 						<textarea id="modal-notes" name="notes" rows="4"></textarea>
