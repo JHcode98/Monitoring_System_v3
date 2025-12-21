@@ -107,8 +107,6 @@ footer{max-width:980px;margin:6px auto;padding:6px 16px;color:var(--muted)}
 
 .status-row button{margin-left:6px;background:#fff;color:var(--accent);border:1px solid #e0e6f0;padding:4px 6px;border-radius:6px}
 .status-row.selected{outline:2px solid rgba(39,82,167,0.14);background:#f6f9ff}
-.status-admin .status-bar-inner{background:#6b6b6b}
-.return{background:#f6b042;color:#fff;padding:4px 6px;border-radius:6px;margin-left:6px;border:0}
 
 /* WINS chart styles */
 .wins-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
@@ -156,12 +154,6 @@ footer{max-width:980px;margin:6px auto;padding:6px 16px;color:var(--muted)}
 #admin-inbox-list .approved-ul li .muted{margin-top:4px;display:block}
 #admin-inbox-list .receive{background:#2b8a2b;color:#fff;border:0}
 #admin-inbox-list .open-new-tab{background:#fff;color:var(--accent);border:1px solid #e0e6f0;padding:4px 6px;border-radius:6px}
-
-/* Admin status label */
-.admin-status-label{display:inline-block;padding:4px 8px;border-radius:6px;background:#eef4ff;color:var(--accent);font-weight:700;margin-left:6px}
-#admin-status-overview .status-row{margin-bottom:6px}
-.admin-status-cell{text-align:center;white-space:nowrap}
-.admin-status-label{display:inline-block;padding:4px 8px;border-radius:6px;background:#eef4ff;color:var(--accent);font-weight:700;margin-left:6px}
 
 /* Column widths for the documents table (Select, Control, Title, Notes, Owner, Status, WINS, Created, Updated, Age, Actions) */
 
