@@ -14,7 +14,6 @@
         <div id="user-info" class="hidden">
           <span id="username-display"></span>
           <span id="role-badge" class="role-badge" style="display:none;margin-left:8px"></span>
-          <button id="logout-btn">Logout</button>
         </div>
       </div>
     </header>
@@ -38,6 +37,7 @@
               <select id="admin-inbox-filter">
                 <option value="forwarded">Forwarded</option>
                 <option value="received">Received</option>
+                <option value="returned">Returned</option>
                 <option value="all">All</option>
               </select>
               <input id="admin-inbox-search" placeholder="Search inbox..." style="flex:1;padding:6px;border:1px solid #e6eef8;border-radius:6px" />
@@ -80,6 +80,14 @@
             <option>Pending for Approve</option>
             <option>Rejected</option>
           </select>
+
+          <label>Admin Status</label>
+          <select id="modal-admin-status" name="adminStatus">
+            <option value="">(none)</option>
+            <option value="Received">Received</option>
+            <option value="Returned">Returned</option>
+          </select>
+
           <label>Created</label>
           <input id="modal-created" name="createdAt" type="datetime-local" />
           <label>Notes</label>
