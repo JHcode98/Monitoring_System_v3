@@ -18,8 +18,6 @@
 					<span id="role-badge" class="role-badge" style="display:none;margin-left:8px"></span>
 					<button id="logout-btn">Logout</button>
 				</div>
-				<!-- Full documents page (all users) -->
-				<button id="documents-full-page-btn" style="display:none;margin-left:8px" title="Open Full Documents View" onclick="window.location.href='documents_full.html'">Full Documents View</button>
 				<!-- Admin Inbox page link (visible only to admin via JS) -->
 				<button id="admin-inbox-page-btn" style="display:none;margin-left:8px" title="Open Admin Inbox Page" onclick="window.location.href='admin_inbox.html'">Admin Inbox Page</button>
 			</div>
@@ -54,11 +52,11 @@
 							</select>
 						</div>
 
-						<h3>Routing by Status</h3>
+						<h3>Routing Status</h3>
 						<div id="approved-by-status" class="approved-list"></div>
 						<div id="by-status-pagination" class="sidebar-pagination" style="margin-bottom:10px"></div>
 						<hr />
-						<h3>Revision by Status</h3>
+						<h3>Revision Status</h3>
 						<div id="approved-by-wins" class="approved-list"></div>
 						<div id="by-wins-pagination" class="sidebar-pagination" style="margin-bottom:10px"></div>
 					</aside>						<!-- Sidebar toggle placed as sibling so it remains clickable when sidebar is collapsed -->
@@ -100,26 +98,40 @@
 							<option>Routing</option>
 							<option>Approved</option>
 							<option>Rejected</option>
+					</select>
 
-							<option>Rejected</option>
-						</select>
+					<label for="doc-admin-status">Admin Status</label>
+					<select id="doc-admin-status" name="adminStatus">
+						<option value="">(none)</option>
+						<option value="Received">Received</option>
+						<option value="Returned">Returned</option>
+					</select>
 
-                        <label for="doc-admin-status">Admin Status</label>
-                        <select id="doc-admin-status" name="adminStatus">
-                          <option value="">(none)</option>
-                          <option value="Received">Received</option>
-                          <option value="Returned">Returned</option>
-                        </select>
+					<label for="wins-status">WINS Status</label>
+					<select id="wins-status" name="winsStatus">
+						<option>Approved</option>
+						<option>Pending for Approve</option>
+						<option>Rejected</option>
+					</select>
 
-                        <label for="wins-status">WINS Status</label>
-                        <select id="wins-status" name="winsStatus">
-                          <option>Approved</option>
-                          <option>Pending for Approve</option>
-                          <option>Rejected</option>
-                        </select>
+					<label for="created-at">Created (modify)</label>
+					<input id="created-at" name="createdAt" type="datetime-local" />
 				</div>
 
-
+				<!-- Admin Inbox (visible to admins only) -->
+				<div id="admin-inbox" class="card hidden">
+					<h3>Admin Inbox</h3>
+					<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+						<select id="admin-inbox-filter">
+							<option value="forwarded">Forwarded</option>
+							<option value="received">Received</option>
+							<option value="all">All</option>
+						</select>
+						<input id="admin-inbox-search" placeholder="Search inbox..." style="flex:1;padding:6px;border:1px solid #e6eef8;border-radius:6px" />
+					</div>
+					<div id="admin-inbox-list"></div>
+					<div id="admin-inbox-pagination" class="sidebar-pagination"></div>
+				</div>
 
 				<div id="results" class="card">
 					<h3>Documents</h3>
@@ -135,7 +147,8 @@
 								<th>WINS Status</th>
 								<th>Created Date</th>
 								<th>Updated Date</th>
-								<th>Age (days)</th>							<th>Admin Status</th>								<th>Actions</th>
+								<th>Age (days)</th>
+								<th>Actions</th>
 							</tr>
 						</thead>
 						<tbody></tbody>
@@ -159,13 +172,6 @@
 				<div id="wins-chart" aria-hidden="false"></div>
 				<div style="margin-top:10px;">
 					<button id="clear-wins-filter">Clear WINS Filter</button>
-				</div>
-
-				<hr />
-				<h3>Admin Status Overview</h3>
-				<div id="admin-status-overview" aria-hidden="false"></div>
-				<div style="margin-top:10px;">
-					<button id="clear-admin-status-filter">Clear Admin Status Filter</button>
 				</div>
 
 				<hr />
@@ -210,12 +216,8 @@
 							<option>Approved</option>
 							<option>Pending for Approve</option>
 							<option>Rejected</option>
-						</select>					<label>Admin Status</label>
-					<select id="modal-admin-status" name="adminStatus">
-						<option value="">(none)</option>
-						<option value="Received">Received</option>
-						<option value="Returned">Returned</option>
-					</select>						<label>Created</label>
+						</select>
+						<label>Created</label>
 						<input id="modal-created" name="createdAt" type="datetime-local" />
 						<label>Notes</label>
 						<textarea id="modal-notes" name="notes" rows="4"></textarea>
