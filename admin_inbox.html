@@ -119,6 +119,9 @@
         // wire refresh
         const btn = document.getElementById('refresh-inbox');
         if(btn) btn.addEventListener('click', () => { try{ window.renderAdminInbox && window.renderAdminInbox(); }catch(e){} });
+        // wire Back link to sign out then redirect to dashboard
+        const back = document.getElementById('back-to-dashboard');
+        if(back){ back.addEventListener('click', (ev) => { ev.preventDefault(); try{ if(window.signOut) window.signOut(); }catch(e){} window.location.href = 'index.html'; }); }
         // render inbox once app is ready
         setTimeout(() => { try{ window.renderAdminInbox && window.renderAdminInbox(); }catch(e){} }, 100);
       });
