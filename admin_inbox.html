@@ -69,23 +69,9 @@
         <form id="modal-doc-form">
           <label>Control Number</label>
           <input id="modal-control" name="controlNumber" required />
-          <label>Title</label>
-          <input id="modal-title-input" name="title" />
           <label>Owner</label>
           <input id="modal-owner" name="owner" />
-          <label>Status</label>
-          <select id="modal-status" name="status">
-            <option>Revision</option>
-            <option>Routing</option>
-            <option>Approved</option>
-            <option>Rejected</option>
-          </select>
-          <label>WINS Status</label>
-          <select id="modal-wins" name="winsStatus">
-            <option>Approved</option>
-            <option>Pending for Approve</option>
-            <option>Rejected</option>
-          </select>
+          <!-- Title / Status / WINS removed from modal; use inline edit form instead -->
           <label>Created</label>
           <input id="modal-created" name="createdAt" type="datetime-local" />
           <label>Notes</label>
