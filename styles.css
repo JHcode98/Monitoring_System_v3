@@ -13,7 +13,7 @@ header h1{margin:0;font-size:18px}
 .hidden{display:none}
 .header-right{display:flex;align-items:center;gap:12px}
 .clock{font-size:13px;color:var(--muted);padding:6px 10px;border-radius:6px;background:rgba(39,82,167,0.05)}
-main{max-width:90%;margin:18px auto;padding:0 16px}
+main{max-width:1200px;margin:18px auto;padding:0 16px}
 .card{background:var(--card);padding:4px;border-radius:8px;box-shadow:0 1px 3px rgba(6, 212, 212, 0.06);margin-bottom:2px}
 #login-section{max-width:400px;margin:0 auto;padding:20px}
 #results{overflow-x:auto}
@@ -41,10 +41,10 @@ footer{max-width:980px;margin:6px auto;padding:6px 16px;color:var(--muted)}
 .age-bad{background:#b92b2b}
 
 /* Layout with sidebar */
-.layout{display:flex;gap:16px;max-width:980px;margin:0 auto}
+.layout{display:flex;gap:16px;max-width:1200px;margin:18px auto;position:relative;align-items:flex-start;flex-wrap:nowrap;padding:0 12px}
 .left-sidebar{width:260px;flex:0 0 260px;max-height:calc(100vh - 140px);overflow:auto;padding:12px}
-.main-column{flex:1}
-#sidebar{width:280px;flex:0 0 280px}
+.main-column{flex:1;min-width:0}
+#sidebar{width:280px;flex:0 0 280px} 
 
 /* Admin Status Overview styles */
 .admin-status-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
@@ -65,7 +65,6 @@ footer{max-width:980px;margin:6px auto;padding:6px 16px;color:var(--muted)}
 .approved-ul a:hover{background:#f1f6ff}
 
 /* Sidebar toggle styles */
-.layout{display:flex;gap:16px;position:relative}
 /* Toggle positioned as a sibling to keep it clickable when sidebar is collapsed */
 .left-sidebar{position:relative}
 .sidebar-toggle{position:absolute;left:260px;top:14px;width:34px;height:40px;border-radius:6px;border:1px solid #e6eef8;background:#ffffff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--accent);box-shadow:0 1px 3px rgba(0,0,0,0.08);z-index:2200}
