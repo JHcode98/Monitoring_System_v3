@@ -13,7 +13,7 @@ header h1{margin:0;font-size:18px}
 .hidden{display:none}
 .header-right{display:flex;align-items:center;gap:12px}
 .clock{font-size:13px;color:var(--muted);padding:6px 10px;border-radius:6px;background:rgba(39,82,167,0.05)}
-main{max-width:1200px;margin:18px auto;padding:0 16px}
+main{max-width:90%;margin:18px auto;padding:0 16px}
 .card{background:var(--card);padding:4px;border-radius:8px;box-shadow:0 1px 3px rgba(6, 212, 212, 0.06);margin-bottom:2px}
 #login-section{max-width:400px;margin:0 auto;padding:20px}
 #results{overflow-x:auto}
@@ -24,9 +24,9 @@ button{background: linear-gradient(45deg, var(--accent), #4a90e2); color:#f4f7f8
 button:hover{background: linear-gradient(45deg, #4a90e2, var(--accent)); transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.2);}
 button[disabled]{opacity:0.6;cursor:default}
 .muted{color:var(--muted);font-size:13px}
-.controls{display:flex;justify-content:space-between;align-items:center;margin:0 auto 10px;width:100%;max-width:900px} 
+.controls{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
 .controls .right{display:flex;gap:8px;align-items:center}
-#docs-table{width:100%;border-collapse:collapse ; margin:0 auto; table-layout: auto; min-width:760px}
+#docs-table{width:100%;border-collapse:collapse ; margin-right: auto; table-layout: auto;}
 #docs-table th, #docs-table td{padding:8px;border-bottom:1px solid #eef2f6;text-align:left}
 #docs-table th{background:#fbfdff;font-weight:600; position: sticky; top: 0; z-index: 1;}
 .form-actions{display:flex;gap:8px}
@@ -41,22 +41,10 @@ footer{max-width:980px;margin:6px auto;padding:6px 16px;color:var(--muted)}
 .age-bad{background:#b92b2b}
 
 /* Layout with sidebar */
-.layout{display:flex;gap:16px;max-width:1200px;margin:18px auto;position:relative;align-items:flex-start;flex-wrap:nowrap;padding:0 12px}
+.layout{display:flex;gap:16px}
 .left-sidebar{width:260px;flex:0 0 260px;max-height:calc(100vh - 140px);overflow:auto;padding:12px}
-.main-column{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:12px}
-/* Ensure cards inside main column are constrained and centered */
-.main-column .card{width:100%;max-width:900px}
-#sidebar{width:280px;flex:0 0 280px} 
-
-/* Admin Status Overview styles */
-.admin-status-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.admin-status-row .status-label{width:110px;font-weight:600}
-.admin-status-row .status-count{width:40px;text-align:right;color:var(--muted)}
-.admin-status-row .status-bar{flex:1;background:#f7f7f9;border-radius:6px;overflow:hidden;height:12px}
-.admin-status-row .status-bar.admin-forwarded .status-bar-inner{background:#f6b042}
-.admin-status-row .status-bar.admin-received .status-bar-inner{background:#6b6b6b}
-.admin-status-row .status-bar.admin-return .status-bar-inner{background:#8e44ad}
-.admin-status-row button{margin-left:6px;background:#fff;color:var(--accent);border:1px solid #e0e6f0;padding:4px 6px;border-radius:6px}
+.main-column{flex:1}
+#sidebar{width:280px;flex:0 0 280px}
 
 /* Approved lists in left sidebar */
 .approved-list{font-size:13px}
@@ -67,6 +55,7 @@ footer{max-width:980px;margin:6px auto;padding:6px 16px;color:var(--muted)}
 .approved-ul a:hover{background:#f1f6ff}
 
 /* Sidebar toggle styles */
+.layout{display:flex;gap:16px;position:relative}
 /* Toggle positioned as a sibling to keep it clickable when sidebar is collapsed */
 .left-sidebar{position:relative}
 .sidebar-toggle{position:absolute;left:260px;top:14px;width:34px;height:40px;border-radius:6px;border:1px solid #e6eef8;background:#ffffff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--accent);box-shadow:0 1px 3px rgba(0,0,0,0.08);z-index:2200}
