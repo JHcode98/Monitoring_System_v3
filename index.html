@@ -54,11 +54,11 @@
 							</select>
 						</div>
 
-						<h3>Approved by Status</h3>
+						<h3>Routing by Status</h3>
 						<div id="approved-by-status" class="approved-list"></div>
 						<div id="by-status-pagination" class="sidebar-pagination" style="margin-bottom:10px"></div>
 						<hr />
-						<h3>Approved by WINS</h3>
+						<h3>Revision by Status</h3>
 						<div id="approved-by-wins" class="approved-list"></div>
 						<div id="by-wins-pagination" class="sidebar-pagination" style="margin-bottom:10px"></div>
 					</aside>						<!-- Sidebar toggle placed as sibling so it remains clickable when sidebar is collapsed -->
@@ -100,13 +100,7 @@
 							<option>Routing</option>
 							<option>Approved</option>
 							<option>Rejected</option>
-<option>Admin Status</option>
-						</select>
 
-						<label for="wins-status">WINS Status</label>
-						<select id="wins-status" name="winsStatus">
-							<option>Approved</option>
-							<option>Pending for Approve</option>
 							<option>Rejected</option>
 						</select>
 
@@ -136,8 +130,7 @@
 								<th>WINS Status</th>
 								<th>Created Date</th>
 								<th>Updated Date</th>
-								<th>Age (days)</th>
-								<th>Actions</th>
+								<th>Age (days)</th>							<th>Admin Status</th>								<th>Actions</th>
 							</tr>
 						</thead>
 						<tbody></tbody>
@@ -161,6 +154,13 @@
 				<div id="wins-chart" aria-hidden="false"></div>
 				<div style="margin-top:10px;">
 					<button id="clear-wins-filter">Clear WINS Filter</button>
+				</div>
+
+				<hr />
+				<h3>Admin Status Overview</h3>
+				<div id="admin-status-overview" aria-hidden="false"></div>
+				<div style="margin-top:10px;">
+					<button id="clear-admin-status-filter">Clear Admin Status Filter</button>
 				</div>
 
 				<hr />
@@ -198,7 +198,7 @@
 							<option>Routing</option>
 							<option>Approved</option>
 							<option>Rejected</option>
-							<option>Admin Status</option>
+
 						</select>
 						<label>WINS Status</label>
 						<select id="modal-wins" name="winsStatus">
