@@ -140,34 +140,6 @@
 			<aside id="sidebar" class="card">
 				<h3>Total Documents</h3>
 				<div id="total-docs" class="total-docs-display" aria-hidden="false"></div>
-
-				<hr />
-				<h3>Status Overview</h3>
-				<div id="status-chart" aria-hidden="false"></div>
-				<div style="margin-top:10px;">
-					<button id="clear-status-filter">Clear Filter</button>
-				</div>
-
-				<hr />
-				<h3>WINS Overview</h3>
-				<div id="wins-chart" aria-hidden="false"></div>
-				<div style="margin-top:10px;">
-					<button id="clear-wins-filter">Clear WINS Filter</button>
-				</div>
-
-				<hr />
-				<h3>Admin Status Overview</h3>
-				<div id="admin-status-overview" aria-hidden="false"></div>
-				<div style="margin-top:10px;">
-					<button id="clear-admin-status-filter">Clear Admin Status Filter</button>
-				</div>
-
-				<hr />
-				<h3>Age Overview (by Status)</h3>
-				<div id="age-overview" aria-hidden="false"></div>
-				<div style="margin-top:10px;">
-					<button id="clear-age-filter">Clear Age Filter</button>
-				</div>
 			</aside>
 		</div>
 			</section>
@@ -187,24 +159,9 @@
 					<form id="modal-doc-form">
 						<label>Control Number</label>
 						<input id="modal-control" name="controlNumber" required />
-						<label>Title</label>
-						<input id="modal-title-input" name="title" />
-						<label>Owner</label>
-						<input id="modal-owner" name="owner" />
-						<label>Status</label>
-						<select id="modal-status" name="status">
-							<option>Revision</option>
-							<option>Routing</option>
-							<option>Approved</option>
-							<option>Rejected</option>
-
-						</select>
-						<label>WINS Status</label>
-						<select id="modal-wins" name="winsStatus">
-							<option>Approved</option>
-							<option>Pending for Approve</option>
-							<option>Rejected</option>
-						</select>
+					<label>Owner</label>
+					<input id="modal-owner" name="owner" />
+					<!-- Title / Status / WINS are removed from modal on purpose: use inline Add/Edit form for those fields -->
 						<label>Created</label>
 						<input id="modal-created" name="createdAt" type="datetime-local" />
 						<label>Notes</label>
