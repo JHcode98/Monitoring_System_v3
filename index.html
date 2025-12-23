@@ -80,38 +80,44 @@
 				</div>
 
 				<div id="new-doc-form" class="card hidden">
-					<h3>Add Document</h3>
-					<form id="doc-form">
-						<label for="control-number">Control Number</label>
-						<input id="control-number" name="controlNumber" placeholder="ECOM-20XX-XXXX" pattern="ECOM-[0-9]{4}-[0-9]{4}" title="Format: ECOM-YYYY-NNNN (e.g. ECOM-2025-0001)" required />
+            <h3>Add Document</h3>
+            <form id="doc-form">
+              <label for="control-number">Control Number</label>
+              <input id="control-number" name="controlNumber" placeholder="ECOM-20XX-XXXX" pattern="ECOM-[0-9]{4}-[0-9]{4}" title="Format: ECOM-YYYY-NNNN (e.g. ECOM-2025-0001)" required />
 
-						<label for="doc-title">Title</label>
-						<input id="doc-title" name="title" required />
+              <label for="doc-title">Title</label>
+              <input id="doc-title" name="title" required />
 
-						<label for="doc-notes">Notes</label>
-						<textarea id="doc-notes" name="notes" rows="3"></textarea>
+              <label for="doc-notes">Notes</label>
+              <textarea id="doc-notes" name="notes" rows="3"></textarea>
 
-						<label for="doc-owner">Owner</label>
-						<input id="doc-owner" name="owner" />
+              <label for="doc-owner">Owner</label>
+              <input id="doc-owner" name="owner" />
 
-						<label for="doc-status">Status</label>
-						<select id="doc-status" name="status">
-							<option>Revision</option>
-							<option>Routing</option>
-							<option>Approved</option>
-							<option>Rejected</option>
-					</select>
+              <label for="doc-status">Status</label>
+              <select id="doc-status" name="status">
+                <option>Revision</option>
+                <option>Routing</option>
+                <option>Approved</option>
+                <option>Rejected</option>
+              </select>
 
-					<label for="wins-status">WINS Status</label>
-					<select id="wins-status" name="winsStatus">
-						<option>Approved</option>
-						<option>Pending for Approve</option>
-						<div class="form-actions">
-							<button type="submit">Save</button>
-							<button type="button" id="cancel-new">Cancel</button>
-						</div>
-					</form>
-				</div> 
+              <label for="wins-status">WINS Status</label>
+              <select id="wins-status" name="winsStatus">
+                <option>Approved</option>
+                <option>Pending for Approve</option>
+                <option>Rejected</option>
+              </select>
+
+              <label for="created-at">Created (modify)</label>
+              <input id="created-at" name="createdAt" type="datetime-local" />
+
+              <div class="form-actions">
+                <button type="submit">Save</button>
+                <button type="button" id="cancel-new">Cancel</button>
+              </div>
+            </form>
+          </div>
 
 
 
@@ -172,31 +178,7 @@
 		</footer>
 
 <!-- Document details modal (opens from left sidebar) -->
-			<div id="doc-modal" class="modal hidden" aria-hidden="true">
-				<div class="modal-overlay" id="modal-overlay"></div>
-				<div class="modal-content card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-					<button class="modal-close" id="modal-close" title="Close"></button>
-					<h2 id="modal-title">Document Details</h2>
-					<form id="modal-doc-form">
-						<label>Control Number</label>
-						<input id="modal-control" name="controlNumber" required />
-					<label>Owner</label>
-					<input id="modal-owner" name="owner" />
-					
-					<!-- Title / Status / WINS are removed from modal on purpose: use inline Add/Edit form for those fields -->
-						
-					<label>Created</label>
-						<input id="modal-created" name="createdAt" type="datetime-local" />
-						
-						<div style="display:flex;gap:8px;margin-top:10px">
-							<button type="submit">Save</button>
-							<button type="button" id="modal-open-new" title="Open in new tab">Open in new tab ↗</button>
-							<button type="button" id="modal-cancel">Cancel</button>
-						</div>
-				
-					</form>
-				</div>
-			</div>/>
+		
 
 			<script src="app.js"></script>
 	</body>
