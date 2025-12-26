@@ -181,5 +181,17 @@ body.full-view main{min-height:calc(100vh - 220px)}
 /* Highlight selected rows */
 .selected-row { background-color: #e6f3ff; }
 
+.btn {
+  background-color: DodgerBlue; /* Blue background */
+  border: none; /* Remove borders */
+  color: white; /* White text */
+  padding: 12px 16px; /* Some padding */
+  font-size: 16px; /* Set a font size */
+  cursor: pointer; /* Mouse pointer on hover */
+}
 
+/* Darker background on mouse-over */
+.btn:hover {
+  background-color: RoyalBlue;
+}
 
