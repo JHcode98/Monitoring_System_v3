@@ -9,7 +9,7 @@ html,body{height:100%;
   box-sizing: border-box;
 }
 
-body{font-family:Segoe UI,Roboto,Arial, sans-serif;background:url(BG5.jpg); background-repeat: no-repeat ; background-size:cover; background-blend-mode: soft-light ; background-color:transparent; }
+body{font-family:Segoe UI,Roboto,Arial, sans-serif;background:url(BG5.jpg); background-repeat: no-repeat ; background-size:cover; background-blend-mode: soft-light ; background-color:transparent; backface-visibility: inherit; }
 header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:linear-gradient(90deg,#fff, #f9fbfd);border-bottom:1px solid #e6e9ee}
 header h1{margin:0;font-size:18px}
 .hidden{display:none}
