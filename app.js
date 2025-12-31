@@ -593,13 +593,24 @@ function updateAdminInboxBadge(){
     const btn = document.getElementById('admin-inbox-page-btn');
     if(!btn) return;
     const counts = computeAdminInboxCounts();
-    // Build inner HTML preserving the anchor text
+    // If we're on the admin inbox page (card present), show all status badges there.
+    // On other pages (dashboards) show only the received badge to avoid clutter.
+    const isInboxPage = !!document.getElementById('admin-inbox');
     const label = 'Admin Inbox';
-    const parts = [label];
-    if(counts.forwarded) parts.push(`<span class="nav-badge badge-forwarded" aria-label="${counts.forwarded} forwarded">${counts.forwarded}</span>`);
-    if(counts.received) parts.push(`<span class="nav-badge badge-received" aria-label="${counts.received} received">${counts.received}</span>`);
-    if(counts.returned) parts.push(`<span class="nav-badge badge-returned" aria-label="${counts.returned} returned">${counts.returned}</span>`);
-    btn.innerHTML = parts.join(' ');
+    if(isInboxPage){
+      const parts = [label];
+      if(counts.forwarded) parts.push(`<span class="nav-badge badge-forwarded" aria-label="${counts.forwarded} forwarded">${counts.forwarded}</span>`);
+      if(counts.received) parts.push(`<span class="nav-badge badge-received" aria-label="${counts.received} received">${counts.received}</span>`);
+      if(counts.returned) parts.push(`<span class="nav-badge badge-returned" aria-label="${counts.returned} returned">${counts.returned}</span>`);
+      btn.innerHTML = parts.join(' ');
+    } else {
+      // dashboard/minor pages: show only received count if any
+      if(counts.received){
+        btn.innerHTML = label + ' ' + `<span class="nav-badge badge-received" aria-label="${counts.received} received">${counts.received}</span>`;
+      } else {
+        btn.innerHTML = label;
+      }
+    }
     // update inbox box badges/menu counts if present
     try{
       const bf = document.getElementById('badge-forwarded-box'); if(bf) bf.textContent = counts.forwarded || '';
