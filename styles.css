@@ -270,6 +270,12 @@ body.no-navbar .navbar{display:none}
 /* Ensure navbar stays hidden on login even on small screens */
 body.no-navbar .navbar{display:none !important}
 
+/* Badge used on admin inbox nav button */
+.nav-badge{display:inline-block;margin-left:8px;padding:2px 6px;border-radius:999px;font-size:12px;font-weight:700;color:#fff}
+.nav-badge.badge-forwarded{background:#f39c12}
+.nav-badge.badge-received{background:#2ecc71}
+.nav-badge.badge-returned{background:#e74c3c}
+
 /* The dropdown container */
 .dropdown {
   float: left;
