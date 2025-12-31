@@ -21,6 +21,8 @@ body{
 }
 header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:linear-gradient(90deg,#fff, #f9fbfd);border-bottom:1px solid #e6e9ee}
 header h1{margin:0;font-size:18px}
+/* Ensure header titles are centered across pages */
+header h1{ text-align:center; width:100%; }
 .hidden{display:none}
 .header-right{display:flex;align-items:center;gap:12px}
 .clock{font-size:13px;color:var(--muted);padding:6px 10px;border-radius:6px;background:rgba(39,82,167,0.05)}
@@ -34,6 +36,8 @@ input[type=text], input[type=password], select, input{padding:8px;border:1px sol
 button{background: linear-gradient(45deg, var(--accent), #4a90e2); color:#f4f7f8; border:0; padding:8px 12px; border-radius:6px; cursor:pointer; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.1);}
 button:hover{background: linear-gradient(45deg, #4a90e2, var(--accent)); transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.2);}
 button[disabled]{opacity:0.6;cursor:default}
+/* Make disabled icon buttons readable */
+.icon-btn[disabled]{opacity:0.9;cursor:default;background:#f3f4f6;border:1px solid #e6eef8;color:var(--muted)}
 .muted{color:var(--muted);font-size:13px}
 .controls{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
 .controls .right{display:flex;gap:8px;align-items:center}
@@ -373,6 +377,17 @@ body{padding-top:64px}
 /* Icon buttons inside cards (controls / small-nav) should be visible on white background */
 .card .icon-btn, .small-nav .icon-btn{ color: var(--accent); background: #fff; border:1px solid #e6eef8 }
 .card .icon-btn:hover, .small-nav .icon-btn:hover{ background:#f6f9ff }
+
+/* Toast notification (bottom-center) */
+.toast-wrap{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:99999}
+.toast{background:rgba(8,18,36,0.96);color:#fff;padding:12px 16px;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.28);display:flex;gap:12px;align-items:center;min-width:220px}
+.toast .toast-msg{flex:1;font-weight:600}
+.toast .toast-action{background:transparent;border:0;color:#ffd36b;font-weight:700;cursor:pointer;padding:6px;border-radius:6px}
+.toast.hide{opacity:0;transform:translateY(8px);transition:opacity 220ms ease, transform 200ms ease}
+
+/* Back-to-dashboard link styling */
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--accent);text-decoration:none;font-weight:700}
+.back-link svg{width:16px;height:16px}
 
 /* Dropdown content (hidden by default) */
 .dropdown-content {
