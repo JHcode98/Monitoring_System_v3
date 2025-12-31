@@ -11,9 +11,27 @@
 		<header>
 			<h1>Document Monitoring System </h1>
 
-				<div class="navbar">
-				<a href="documents_full.html" id="documents-full-page-btn" class="nav-btn" title="Open Full Documents View">Full Docs</a>
-				<a href="admin_inbox.html" id="admin-inbox-page-btn" class="nav-btn" style="display:none;margin-left:8px" title="Open Admin Inbox Page">Admin Inbox</a>
+				<div class="navbar" role="navigation">
+					<div class="nav-left">
+						<a href="documents_full.html" id="documents-full-page-btn" class="nav-btn" title="Open Full Documents View">Full Docs</a>
+						<a href="admin_inbox.html" id="admin-inbox-page-btn" class="nav-btn" style="display:none" title="Open Admin Inbox Page">Admin Inbox</a>
+					</div>
+					<button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+						<span class="bar"></span>
+						<span class="bar"></span>
+						<span class="bar"></span>
+					</button>
+							<div class="nav-right">
+								<div id="clock" class="clock" aria-live="polite"></div>
+								<div id="sr-status" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+								<div class="nav-user" id="nav-user">
+									<a class="user-btn" id="user-btn" href="profile.html"><span id="username-display"></span> <span id="role-badge" class="role-badge" style="display:none;margin-left:8px"></span></a>
+									<div class="user-menu" id="user-menu" role="menu" aria-label="User menu">
+										<a href="profile.html" id="profile-btn" role="menuitem">Profile</a>
+										<button id="logout-btn" role="menuitem">Logout</button>
+									</div>
+								</div>
+							</div>
 				</div>
 
 
@@ -203,6 +221,7 @@
 		
 
 			<script src="app.js"></script>
+			<!-- profile moved to profile.html -->
 	</body>
 </html>
 
