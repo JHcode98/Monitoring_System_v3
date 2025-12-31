@@ -12,6 +12,13 @@ html,body{height:100%;
 }
 
 body{font-family:Segoe UI,Roboto,Arial, sans-serif;background:url(BG6.jpg); background-repeat: no-repeat ; background-size:cover; background-blend-mode: soft-light ; background-color:transparent; backface-visibility: inherit; }
+/* Improved background: subtle gradient overlay for readability */
+body{
+  background-image: linear-gradient(180deg, rgba(20,30,48,0.18), rgba(255,255,255,0.02)), url(BG6.jpg);
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+}
 header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:linear-gradient(90deg,#fff, #f9fbfd);border-bottom:1px solid #e6e9ee}
 header h1{margin:0;font-size:18px}
 .hidden{display:none}
@@ -84,6 +91,10 @@ footer{max-width:980px;margin:6px auto;padding:6px 16px;color:var(--muted)}
 .sidebar-pagination{display:flex;gap:8px;align-items:center;justify-content:center;margin-top:8px}
 .sidebar-pagination button{padding:6px 8px;border-radius:6px;border:1px solid #e6eef8;background:#fff;color:var(--accent);}
 .sidebar-pagination .current-page{font-weight:700;color:var(--muted)}
+
+/* Make sidebar control buttons more readable on white background */
+.sidebar button{background:#fff;color:var(--accent);border:1px solid #e6eef8;padding:6px 8px;border-radius:6px}
+.sidebar button:hover{background:#f6f9ff}
 
 /* Modal styles */
 .modal.hidden{display:none}
