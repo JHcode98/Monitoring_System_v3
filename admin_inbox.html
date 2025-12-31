@@ -19,14 +19,25 @@
           <span class="bar"></span>
           <span class="bar"></span>
         </button>
-        <div class="nav-right">
-          <div id="clock" class="clock" aria-live="polite"></div>
-          <div id="sr-status" class="sr-only" aria-live="polite" aria-atomic="true"></div>
-          <div class="nav-user" id="nav-user">
-            <a class="user-btn" id="user-btn" href="profile.html"><span id="username-display"></span> <span id="role-badge" class="role-badge" style="display:none;margin-left:8px"></span></a>
-            <div class="user-menu" id="user-menu" role="menu" aria-label="User menu">
-              <a href="profile.html" id="profile-btn" role="menuitem">Profile</a>
-              <button id="logout-btn" role="menuitem">Logout</button>
+        <div class="navbar">
+          <div class="nav-left">
+            <a id="admin-inbox-page-btn" href="admin_inbox.html" class="icon-btn" title="Inbox">Inbox</a>
+          </div>
+          <div class="nav-center"><div class="nav-title">Monitoring System</div></div>
+          <div class="nav-right">
+            <div style="position:relative">
+              <button id="admin-filter-btn" class="icon-btn" title="Inbox filters" aria-haspopup="true" aria-expanded="false"> 
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="10" y1="21" x2="10" y2="10"></line><line x1="16" y1="21" x2="16" y2="6"></line></svg>
+              </button>
+              <div id="admin-filter-menu" class="card" style="position:absolute;right:0;top:40px;display:none;padding:8px;min-width:140px;box-shadow:0 6px 18px rgba(0,0,0,0.12)">
+                <button class="icon-btn admin-filter-item" data-filter="forwarded" title="Show forwarded">Forwarded</button>
+                <button class="icon-btn admin-filter-item" data-filter="received" title="Show received">Received</button>
+                <button class="icon-btn admin-filter-item" data-filter="returned" title="Show returned">Returned</button>
+                <button class="icon-btn admin-filter-item" data-filter="all" title="Show all">All</button>
+              </div>
+            </div>
+          </div>
+        </div>
             </div>
           </div>
         </div>
@@ -47,12 +58,6 @@
           <div id="admin-inbox" class="card">
             <h3>Admin Inbox</h3>
             <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
-              <select id="admin-inbox-filter">
-                <option value="forwarded">Forwarded</option>
-                <option value="received">Received</option>
-                <option value="returned">Returned</option>
-                <option value="all">All</option>
-              </select>
               <input id="admin-inbox-search" placeholder="Search inbox..." style="flex:1;padding:6px;border:1px solid #e6eef8;border-radius:6px" />
             </div>
             <div id="admin-inbox-list"></div>
@@ -112,6 +117,18 @@
         if(btn) btn.addEventListener('click', () => { try{ window.renderAdminInbox && window.renderAdminInbox(); }catch(e){} });
         // render inbox once app is ready
         setTimeout(() => { try{ window.renderAdminInbox && window.renderAdminInbox(); }catch(e){} }, 100);
+        // wire filter menu
+        const filterBtn = document.getElementById('admin-filter-btn');
+        const menu = document.getElementById('admin-filter-menu');
+        if(filterBtn && menu){
+          filterBtn.addEventListener('click', (e) => { e.stopPropagation(); const open = menu.style.display !== 'block'; menu.style.display = open ? 'block' : 'none'; filterBtn.setAttribute('aria-expanded', open ? 'true' : 'false'); });
+          document.addEventListener('click', () => { menu.style.display = 'none'; filterBtn.setAttribute('aria-expanded','false'); });
+          menu.querySelectorAll('.admin-filter-item').forEach(b => b.addEventListener('click', (ev) => {
+            const f = b.getAttribute('data-filter');
+            try{ if(window.setAdminInboxFilter) window.setAdminInboxFilter(f); else { localStorage.setItem('dms_admin_inbox_filter', f); } }catch(e){}
+            menu.style.display = 'none'; filterBtn.setAttribute('aria-expanded','false');
+          }));
+        }
       });
     </script>
 
