@@ -287,6 +287,14 @@ body{padding-top:64px}
   /* hide left links by default and show hamburger */
   .nav-left{display:none}
   .nav-toggle{display:inline-flex}
+
+  /* Stack controls on small screens */
+  .controls{flex-direction:column;align-items:stretch}
+  .controls .left, .controls .right{width:100%;display:flex;gap:8px;flex-wrap:wrap}
+  .controls .right{justify-content:flex-start}
+  .tools{flex-direction:column}
+  /* make table responsive */
+  .full-results{overflow-x:auto}
 }
 
 @media (max-width: 420px) {
@@ -336,7 +344,7 @@ body{padding-top:64px}
 }
 
 /* Icon-style small buttons used for actions */
-.icon-btn{background:transparent;border:0;color:white;padding:6px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+.icon-btn{background:transparent;border:0;color:inherit;padding:6px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
 .icon-btn svg{width:16px;height:16px;display:block}
 .icon-btn:hover{background:rgba(255,255,255,0.06);transform:translateY(-2px)}
 
@@ -358,6 +366,13 @@ body{padding-top:64px}
 /* small tools area for pages */
 .tools{display:flex;gap:8px;align-items:center;margin-bottom:12px}
 .tools input{padding:6px 8px;border-radius:6px;border:1px solid #e6eef8}
+
+/* Ensure icon buttons inside navbar stay white */
+.navbar .icon-btn{ color: #fff }
+
+/* Icon buttons inside cards (controls / small-nav) should be visible on white background */
+.card .icon-btn, .small-nav .icon-btn{ color: var(--accent); background: #fff; border:1px solid #e6eef8 }
+.card .icon-btn:hover, .small-nav .icon-btn:hover{ background:#f6f9ff }
 
 /* Dropdown content (hidden by default) */
 .dropdown-content {
