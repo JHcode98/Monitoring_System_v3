@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Recycle Bin</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="navbar">
+    <div class="nav-left">
+      <a href="index.html" class="nav-btn">Dashboard</a>
+      <a href="documents_full.html" class="nav-btn">Full Docs</a>
+      <a href="admin_inbox.html" class="nav-btn">Admin Inbox</a>
+      <a href="recycle_bin.html" class="nav-btn">Recycle Bin</a>
+    </div>
+    <div class="nav-center"><div class="nav-title">Document Monitoring System</div></div>
+    <div class="nav-right"></div>
+  </div>
+  <main style="max-width:980px;margin:18px auto;padding:16px">
+    <h1>Recycle Bin</h1>
+    <p class="muted">Deleted documents are kept here. You can restore or permanently delete items.</p>
+    <div id="recycle-list" class="card" style="padding:12px"></div>
+  </main>
+  <script src="app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      try{ window.renderRecycleBin && window.renderRecycleBin(); }catch(e){}
+    });
+  </script>
+</body>
+</html>
