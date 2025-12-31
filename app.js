@@ -543,6 +543,7 @@ function renderAdminInbox(externalFilter){
 function enhanceToolbarIcons(){
   const map = [
     ['new-doc-btn','New Document', '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>'],
+    ['refresh-docs','Refresh','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.36-3.36L23 10"></path><path d="M20.49 15a9 9 0 0 1-14.36 3.36L1 14"></path></svg>'],
     ['search-btn','Search','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>'],
     ['clear-search','Clear','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>'],
     ['download-template','Download Template','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>'],
@@ -557,7 +558,9 @@ function enhanceToolbarIcons(){
     try{
       const el = document.getElementById(id);
       if(!el) return;
-      el.innerHTML = svg;
+      // keep possible existing label span for responsive show/hide
+      const label = el.querySelector('.btn-label');
+      el.innerHTML = svg + (label ? label.outerHTML : '');
       el.setAttribute('title', title);
       el.setAttribute('aria-label', title);
       el.classList.add('icon-btn');
