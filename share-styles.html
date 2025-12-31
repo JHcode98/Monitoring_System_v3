@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Share styles.css</title>
+  <style>
+    body{font-family:Segoe UI,Roboto,Arial,sans-serif;padding:18px;background:#f6f8fc}
+    .wrap{max-width:980px;margin:0 auto}
+    textarea{width:100%;height:380px;padding:12px;border-radius:8px;border:1px solid #d6dbe6;font-family:monospace;white-space:pre;overflow:auto}
+    .row{display:flex;gap:8px;margin-top:12px}
+    button{padding:8px 12px;border-radius:6px;border:0;background:#2752a7;color:#fff;cursor:pointer}
+    .muted{color:#556}
+    .output{margin-top:12px;padding:8px;background:#fff;border-radius:6px;border:1px solid #e6e9ee}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Share `styles.css`</h1>
+    <p class="muted">Use these tools to copy or download the project's stylesheet in multiple shareable formats.</p>
+    <label for="css">CSS content</label>
+    <textarea id="css">:root{
+  --bg:#f4f6f8;
+  --card:#ffffff;
+  --accent:#2752a7;
+  --muted:#666;
+}
+/* Screen-reader only helper (visually hidden but available to assistive tech) */
+.sr-only{position:absolute!important;border:0!important;padding:0!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(1px,1px,1px,1px)!important;white-space:nowrap!important;clip-path:inset(50%)!important}
+*{box-sizing:border-box}
+html,body{height:100%;
+  box-sizing: border-box;
+}
+
+body{font-family:Segoe UI,Roboto,Arial, sans-serif;background:url(BG6.jpg); background-repeat: no-repeat ; background-size:cover; background-blend-mode: soft-light ; background-color:transparent; backface-visibility: inherit; }
+header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:linear-gradient(90deg,#fff, #f9fbfd);border-bottom:1px solid #e6e9ee}
+header h1{margin:0;font-size:18px}
+.hidden{display:none}
+.header-right{display:flex;align-items:center;gap:12px}
+.clock{font-size:13px;color:var(--muted);padding:6px 10px;border-radius:6px;background:rgba(39,82,167,0.05)}
+main{max-width:90%;margin:18px auto;padding:0 16px}
+.card{background:var(--card);padding:4px;border-radius:8px;box-shadow:0 1px 3px rgba(6, 212, 212, 0.06);margin-bottom:2px}
+#login-section{max-width:400px;margin:0 auto;padding:20px}
+#results{overflow-x:auto}
+form{display:flex;flex-direction:column;gap:10px}
+label{font-size:13px;color:var(--muted)}
+input[type=text], input[type=password], select, input{padding:8px;border:1px solid #d6dbe6;border-radius:6px}
+button{background: linear-gradient(45deg, var(--accent), #4a90e2); color:#f4f7f8; border:0; padding:8px 12px; border-radius:6px; cursor:pointer; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.1);}
+button:hover{background: linear-gradient(45deg, #4a90e2, var(--accent)); transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.2);}
+button[disabled]{opacity:0.6;cursor:default}
+.muted{color:var(--muted);font-size:13px}
+.controls{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.controls .right{display:flex;gap:8px;align-items:center}
+#docs-table{width:100%;border-collapse:collapse ; margin-right: auto; table-layout: auto;}
+#docs-table th, #docs-table td{padding:8px;border-bottom:1px solid #eef2f6;text-align:left}
+#docs-table th{background:#fbfdff;font-weight:600; position: sticky; top: 0; z-index: 1;}
+.form-actions{display:flex;gap:8px}
+td.actions button{margin-right:6px;background: linear-gradient(45deg, var(--accent), #4a90e2); color:#f4f7f8;}
+td.actions button.delete{background: linear-gradient(45deg, #a63131, #d9534f); color:#f4f7f8;}
+td.actions button.delete:hover{background: linear-gradient(45deg, #d9534f, #a63131);}
+footer{max-width:980px;margin:6px auto;padding:6px 16px;color:var(--muted)}
+
+.age{display:inline-block;padding:4px 8px;border-radius:6px;color:#fff;font-weight:600}
+.age-good{background:#2b8a2b}
+.age-warn{background:#d08a1a}
+.age-bad{background:#b92b2b}
+
+/* Layout with sidebar */
+.layout{display:flex;gap:16px}
+.left-sidebar{width:260px;flex:0 0 260px;max-height:calc(100vh - 140px);overflow:auto;padding:12px}
+.main-column{flex:1}
+#sidebar{width:280px;flex:0 0 280px}
+
+/* Approved lists in left sidebar */
+.approved-list{font-size:13px}
+.approved-list .muted{padding:6px;color:var(--muted)}
+.approved-ul{list-style:none;padding:0;margin:0}
+.approved-ul li{margin-bottom:6px;display:flex;align-items:center;justify-content:space-between}
+.approved-ul a{color:var(--accent);text-decoration:none;font-weight:600;display:block;padding:6px;border-radius:6px;flex:1}
+.approved-ul a:hover{background:#f1f6ff}
+
+/* Sidebar toggle styles */
+.layout{display:flex;gap:16px;position:relative}
+/* Toggle positioned as a sibling to keep it clickable when sidebar is collapsed */
+.left-sidebar{position:relative}
+.sidebar-toggle{position:absolute;left:260px;top:14px;width:34px;height:40px;border-radius:6px;border:1px solid #e6eef8;background:#ffffff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--accent);box-shadow:0 1px 3px rgba(0,0,0,0.08);z-index:2200}
+/* When sidebar is collapsed, move the toggle to the left edge */
+.left-sidebar.collapsed + .sidebar-toggle{left:4px}
+.left-sidebar.collapsed{width:0;min-width:0;padding:0;overflow:hidden;opacity:0;visibility:hidden;pointer-events:none}
+.left-sidebar.collapsed .approved-list, .left-sidebar.collapsed h3, .left-sidebar.collapsed .sidebar-controls, .left-sidebar.collapsed .sidebar-pagination { display:none !important; }
+.left-sidebar{transition:width 200ms ease, opacity 200ms ease}
+
+/* Ensure toggle moves smoothly */
+.sidebar-toggle{transition:left 200ms ease, transform 200ms ease}
+
+/* Role badge */
+.role-badge{display:inline-block;padding:4px 8px;border-radius:6px;background:#eef4ff;color:var(--accent);font-weight:700;font-size:12px}
+
+/* Login center styles */
+#login-section.centered{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2200;box-shadow:0 6px 18px rgba(0,0,0,0.12);border-radius:8px}
+
+
+/* Sidebar search & pagination */
+.sidebar-controls input{width:100%}
+.sidebar-pagination{display:flex;gap:8px;align-items:center;justify-content:center;margin-top:8px}
+.sidebar-pagination button{padding:6px 8px;border-radius:6px;border:1px solid #e6eef8;background:#fff;color:var(--accent);}
+.sidebar-pagination .current-page{font-weight:700;color:var(--muted)}
+
+/* Modal styles */
+.modal.hidden{display:none}
+.modal{position:fixed;inset:0;z-index:2000}
+.modal-overlay{position:absolute;inset:0;background:rgba(18,24,36,0.48)}
+.modal-content{position:relative;max-width:760px;margin:40px auto;padding:16px;border-radius:8px;z-index:2001}
+.modal-close{position:absolute;right:10px;top:10px;border:0;background:#fff;border-radius:6px;padding:6px 8px;cursor:pointer}
+.modal-content form{display:flex;flex-direction:column;gap:8px}
+.modal-content input, .modal-content select, .modal-content textarea{padding:8px;border:1px solid #d6dbe6;border-radius:6px}
+#modal-open-new{background:#fff;color:var(--accent);border:1px solid #e0e6f0}
+#modal-cancel{background:#f0f0f0;color:#333;border:1px solid #d6dbe6}
+
+
+/* Status chart rows */
+.status-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.status-label{width:90px;font-weight:600}
+.status-count{width:40px;text-align:right;color:var(--muted)}
+.status-bar{flex:1;background:#eef4fb;border-radius:6px;overflow:hidden;height:14px}
+.status-bar-inner{height:100%;background:#2752a7;width:0}
+.status-revision .status-bar-inner{background:#6aa84f}
+.status-routing .status-bar-inner{background:#f6b042}
+.status-approved .status-bar-inner{background:#2b8a2b}
+.status-rejected .status-bar-inner{background:#d9534f}
+
+.status-row button{margin-left:6px;background:#fff;color:var(--accent);border:1px solid #e0e6f0;padding:4px 6px;border-radius:6px}
+.status-row.selected{outline:2px solid rgba(39,82,167,0.14);background:#f6f9ff}
+
+/* WINS chart styles */
+.wins-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.wins-label{width:110px;font-weight:600}
+.wins-count{width:40px;text-align:right;color:var(--muted)}
+.wins-bar{flex:1;background:#f2f7f2;border-radius:6px;overflow:hidden;height:14px}
+.wins-bar-inner{height:100%;background:#2b8a2b;width:0}
+.wins-approved .wins-bar-inner{background:#2b8a2b}
+.wins-pending .wins-bar-inner{background:#f6b042}
+.wins-rejected .wins-bar-inner{background:#d9534f}
+.wins-row button{margin-left:6px;background:#fff;color:var(--accent);border:1px solid #e0e6f0;padding:4px 6px;border-radius:6px}
+.wins-row.selected{outline:2px solid rgba(43,138,43,0.12);background:#f7fff6}
+
+/* Age overview styles */
+.age-ov-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.age-ov-label{width:110px;font-weight:600}
+.age-ov-avg{min-width:56px;padding:4px 8px;border-radius:6px;background:#eef6ff;color:#0b4da0;text-align:center;font-weight:700}
+.age-ov-buckets{flex:1;display:flex;gap:6px;align-items:center}
+.age-bucket{flex:1;background:#f1f5f9;border-radius:6px;height:12px;overflow:hidden;position:relative}
+.age-bucket-inner{height:100%;background:#6aa84f;width:0}
+.age-bucket-inner.mid{background:#f6b042}
+.age-bucket-inner.bad{background:#d9534f}
+.age-ov-count{width:36px;text-align:right;color:var(--muted)}
+.age-ov-row button{margin-left:6px;background:#fff;color:var(--accent);border:1px solid #e0e6f0;padding:4px 6px;border-radius:6px}
+.age-ov-row.selected{outline:2px solid rgba(39,82,167,0.08);background:#f6faff}
+
+/* Total documents display */
+.total-docs-display{font-size:48px;font-weight:700;text-align:center;color:var(--accent);padding:20px 0}
+
+/* Centered overview area (Status / WINS / Admin Status / Age) */
+.center-overviews{max-width:980px;margin:18px auto;padding:12px}
+.overviews-grid{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;align-items:flex-start}
+.overview-card{flex:1 1 240px;max-width:480px;min-width:220px;padding:12px;border-radius:8px;background:var(--card);box-shadow:0 1px 3px rgba(6,212,212,0.04)}
+.overview-card h3{margin-top:0;margin-bottom:8px}
+
+/* Full documents view: fit to window */
+body.full-view main{min-height:calc(100vh - 220px)}
+.full-results{width:100%}
+
+/* Ensure charts expand to card width */
+#status-chart, #wins-chart, #age-overview, #admin-status-overview{width:100%}
+
+
+/* Notes cell: truncate long notes and provide tooltip */
+.notes-cell{max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.notes-cell .notes-text{display:inline-block;vertical-align:middle;max-width:160px;overflow:hidden;text-overflow:ellipsis}
+.note-edit-btn{background:#fff;color:var(--accent);border:1px solid #e0e6f0;padding:2px 6px;border-radius:6px;margin-left:6px}
+.note-save-btn{background:#2b6a2b;padding:4px 6px;margin-left:6px}
+.note-cancel-btn{background:#a63131;padding:4px 6px;margin-left:6px}
+
+/* Forward/Receive buttons */
+.forward{background:#fff;color:var(--accent);border:1px solid #e0e6f0;padding:4px 6px;border-radius:6px;margin-left:6px}
+.receive{background:#2b8a2b;color:#fff;padding:4px 6px;border-radius:6px;margin-left:6px;border:0}
+.forwarded-label{display:inline-block;padding:4px 8px;border-radius:6px;background:#fff3e8;color:#d08a1a;font-weight:700;margin-left:6px}
+
+/* Admin inbox */
+#admin-inbox{margin-bottom:12px}
+#admin-inbox-list .approved-ul li{padding:8px;border-bottom:1px solid #eef2f6}
+#admin-inbox-list .approved-ul li .muted{margin-top:4px;display:block}
+#admin-inbox-list .receive{background:#2b8a2b;color:#fff;border:0}
+#admin-inbox-list .open-new-tab{background:#fff;color:var(--accent);border:1px solid #e0e6f0;padding:4px 6px;border-radius:6px}
+
+/* Column widths for the documents table (Select, Control, Title, Notes, Owner, Status, WINS, Created, Updated, Age, Actions) */
+
+/* Removed fixed widths for autofit */
+
+/* Ensure truncated cells wrap appropriately where needed */
+#docs-table td{overflow:hidden;text-overflow:ellipsis}
+
+/* Highlight selected rows */
+.selected-row { background-color: #e6f3ff; }
+
+
+/* Navbar container */
+.navbar {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  background: linear-gradient(90deg,#1f3f72,#16325a);
+  color:#fff;
+  padding:8px 12px;
+  border-radius:8px;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+}
+
+/* Navbar groups */
+.navbar .nav-left, .navbar .nav-right{display:flex;align-items:center;gap:8px}
+
+/* Links inside the navbar */
+.navbar a {
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-size:15px;
+  color: white;
+  text-decoration: none;
+  padding:8px 12px;
+}
+
+/* Navbar button-style link */
+.navbar .nav-btn{
+  background: linear-gradient(45deg, #4a90e2, #2752a7);
+  border-radius:8px;
+  color:#fff;
+  box-shadow:0 4px 12px rgba(16,40,80,0.24);
+}
+.navbar .nav-btn:hover{ transform: translateY(-2px); }
+
+/* User dropdown in navbar (right side) */
+.nav-user{
+  position:relative;
+}
+.nav-user .user-btn{
+  background:transparent;color:#fff;border:0;padding:6px 8px;border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;gap:8px
+}
+.nav-user .user-btn:hover{background:rgba(255,255,255,0.06)}
+.nav-user .user-menu{position:absolute;right:0;top:calc(100% + 8px);background:#fff;color:#111;border-radius:8px;box-shadow:0 8px 24px rgba(18,30,60,0.16);min-width:180px;display:none;z-index:3000;padding:8px;transform-origin:top right;transform:translateY(-6px) scale(0.98);opacity:0}
+.nav-user .user-menu a, .nav-user .user-menu button{display:block;width:100%;text-align:left;padding:8px;border-radius:6px;background:transparent;border:0;color:#16325a}
+.nav-user .user-menu a:hover, .nav-user .user-menu button:hover{background:#f1f5fb}
+.nav-user.open .user-menu{display:block;transform:translateY(0) scale(1);opacity:1;transition:transform 180ms cubic-bezier(.2,.9,.2,1), opacity 160ms ease}
+
+/* Clock styling inside navbar */
+.navbar .clock{background:transparent;padding:6px 8px;border-radius:6px;color:rgba(255,255,255,0.9)}
+
+/* Hide navbar when body has no-navbar (used during login view) */
+body.no-navbar .navbar{display:none}
+
+/* Responsive: stack navbar and header-right on small screens */
+@media (max-width: 720px) {
+  header {flex-direction:column;align-items:stretch;gap:8px;padding:10px 12px}
+  header h1 {font-size:16px}
+  .navbar {display:flex;flex-wrap:wrap;gap:8px;padding:8px;background-color:#333}
+  .navbar a {float:none;display:inline-flex;align-items:center;justify-content:center;padding:10px 12px;border-radius:6px;text-align:center}
+  .navbar .nav-btn {flex:1 1 auto;margin-left:0}
+  .header-right {display:flex;justify-content:flex-end;gap:8px;padding:0 8px 8px}
+  .clock{order:1}
+  /* hide left links by default and show hamburger */
+  .nav-left{display:none}
+  .nav-toggle{display:inline-flex}
+}
+
+@media (max-width: 420px) {
+  .navbar a {font-size:14px;padding:8px 10px}
+  .header-right {justify-content:center}
+  header h1 {text-align:left}
+}
+
+/* Hamburger toggle (hidden on larger screens) */
+.nav-toggle{display:none;border:0;background:transparent;color:#fff;padding:8px;border-radius:6px;cursor:pointer;align-items:center;justify-content:center}
+.nav-toggle .bar{display:block;width:18px;height:2px;background:#fff;margin:3px 0;border-radius:2px;transition:all 160ms ease}
+.navbar.open .nav-left{display:flex}
+.navbar.open .nav-toggle .bar:nth-child(1){transform:translateY(5px) rotate(45deg)}
+.navbar.open .nav-toggle .bar:nth-child(2){opacity:0}
+.navbar.open .nav-toggle .bar:nth-child(3){transform:translateY(-5px) rotate(-45deg)}
+
+/* Ensure navbar stays hidden on login even on small screens */
+body.no-navbar .navbar{display:none !important}
+
+/* Badge used on admin inbox nav button */
+.nav-badge{display:inline-block;margin-left:8px;padding:2px 6px;border-radius:999px;font-size:12px;font-weight:700;color:#fff}
+.nav-badge.badge-forwarded{background:#f39c12}
+.nav-badge.badge-received{background:#2ecc71}
+.nav-badge.badge-returned{background:#e74c3c}
+
+/* The dropdown container */
+.dropdown {
+  float: left;
+  overflow: hidden;
+}
+
+/* Dropdown button */
+.dropdown .dropbtn {
+  font-size: 16px;
+  border: none;
+  outline: none;
+  color: white;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit; /* Important for vertical align on mobile phones */
+  margin: 0; /* Important for vertical align on mobile phones */
+}
+
+/* Add a red background color to navbar links on hover */
+.navbar a:hover, .dropdown:hover .dropbtn {
+  background-color: red;
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+/* Add a grey background color to dropdown links on hover */
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+</textarea>
+
+    <div class="row">
+      <button id="copy-css">Copy CSS</button>
+      <button id="copy-dataurl">Copy Data URL</button>
+      <button id="download-css">Download .css</button>
+      <button id="download-json">Download JSON</button>
+    </div>
+
+    <div class="output" id="output"></div>
+  </div>
+
+  <script>
+    const ta = document.getElementById('css');
+    const out = document.getElementById('output');
+
+    function show(msg){ out.textContent = msg; setTimeout(()=>out.textContent='',2500);} 
+
+    document.getElementById('copy-css').addEventListener('click', async()=>{
+      await navigator.clipboard.writeText(ta.value);
+      show('CSS copied to clipboard');
+    });
+
+    document.getElementById('copy-dataurl').addEventListener('click', async()=>{
+      const css = ta.value;
+      const b64 = btoa(unescape(encodeURIComponent(css)));
+      const dataurl = 'data:text/css;base64,'+b64;
+      await navigator.clipboard.writeText(dataurl);
+      show('Data URL copied to clipboard');
+    });
+
+    document.getElementById('download-css').addEventListener('click', ()=>{
+      const blob = new Blob([ta.value],{type:'text/css'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = 'styles.css'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    });
+
+    document.getElementById('download-json').addEventListener('click', ()=>{
+      const payload = { filename: 'styles.css', content: ta.value };
+      const blob = new Blob([JSON.stringify(payload, null, 2)],{type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = 'styles.css.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    });
+  </script>
+</body>
+</html>
