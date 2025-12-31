@@ -184,7 +184,7 @@ body.full-view main{min-height:calc(100vh - 220px)}
 .selected-row { background-color: #e6f3ff; }
 
 
-/* Navbar container */
+/* Navbar container (fixed top, consistent across pages) */
 .navbar {
   display:flex;
   align-items:center;
@@ -192,8 +192,14 @@ body.full-view main{min-height:calc(100vh - 220px)}
   gap:12px;
   background: linear-gradient(90deg,#1f3f72,#16325a);
   color:#fff;
-  padding:8px 12px;
-  border-radius:8px;
+  padding:0 16px;
+  height:56px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.12);
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index:9999;
   font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
 }
 
@@ -208,7 +214,9 @@ body.full-view main{min-height:calc(100vh - 220px)}
   font-size:15px;
   color: white;
   text-decoration: none;
-  padding:8px 12px;
+  padding:10px 14px;
+  border-radius:8px;
+  transition: background 160ms ease, transform 120ms ease;
 }
 
 /* Navbar button-style link */
@@ -219,6 +227,9 @@ body.full-view main{min-height:calc(100vh - 220px)}
   box-shadow:0 4px 12px rgba(16,40,80,0.24);
 }
 .navbar .nav-btn:hover{ transform: translateY(-2px); }
+
+/* subtle hover for links */
+.navbar a:hover{ background: rgba(255,255,255,0.06); }
 
 /* User dropdown in navbar (right side) */
 .nav-user{
@@ -237,7 +248,8 @@ body.full-view main{min-height:calc(100vh - 220px)}
 .navbar .clock{background:transparent;padding:6px 8px;border-radius:6px;color:rgba(255,255,255,0.9)}
 
 /* Hide navbar when body has no-navbar (used during login view) */
-body.no-navbar .navbar{display:none}
+/* Disabled so navbar remains visible across pages */
+/* body.no-navbar .navbar{display:none} */
 
 /* Responsive: stack navbar and header-right on small screens */
 @media (max-width: 720px) {
@@ -259,8 +271,7 @@ body.no-navbar .navbar{display:none}
   header h1 {text-align:left}
 }
 
-/* Hamburger toggle (hidden on larger screens) */
-.nav-toggle{display:none;border:0;background:transparent;color:#fff;padding:8px;border-radius:6px;cursor:pointer;align-items:center;justify-content:center}
+.nav-toggle{display:none !important;border:0;background:transparent;color:#fff;padding:8px;border-radius:6px;cursor:pointer;align-items:center;justify-content:center}
 .nav-toggle .bar{display:block;width:18px;height:2px;background:#fff;margin:3px 0;border-radius:2px;transition:all 160ms ease}
 .navbar.open .nav-left{display:flex}
 .navbar.open .nav-toggle .bar:nth-child(1){transform:translateY(5px) rotate(45deg)}
@@ -268,7 +279,8 @@ body.no-navbar .navbar{display:none}
 .navbar.open .nav-toggle .bar:nth-child(3){transform:translateY(-5px) rotate(-45deg)}
 
 /* Ensure navbar stays hidden on login even on small screens */
-body.no-navbar .navbar{display:none !important}
+/* Disabled so navbar remains visible across pages */
+/* body.no-navbar .navbar{display:none !important} */
 
 /* Badge used on admin inbox nav button */
 .nav-badge{display:inline-block;margin-left:8px;padding:2px 6px;border-radius:999px;font-size:12px;font-weight:700;color:#fff}
@@ -294,9 +306,9 @@ body.no-navbar .navbar{display:none !important}
   margin: 0; /* Important for vertical align on mobile phones */
 }
 
-/* Add a red background color to navbar links on hover */
+/* Hover style for navbar links and dropdowns */
 .navbar a:hover, .dropdown:hover .dropbtn {
-  background-color: red;
+  background-color: rgba(255,255,255,0.06);
 }
 
 /* Dropdown content (hidden by default) */
