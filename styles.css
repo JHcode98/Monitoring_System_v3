@@ -166,6 +166,13 @@ body.full-view main{min-height:calc(100vh - 220px)}
 .receive{background:#2b8a2b;color:#fff;padding:4px 6px;border-radius:6px;margin-left:6px;border:0}
 .forwarded-label{display:inline-block;padding:4px 8px;border-radius:6px;background:#fff3e8;color:#d08a1a;font-weight:700;margin-left:6px}
 
+/* Admin received status styling (dashboard) */
+.admin-status-label{display:inline-block;padding:4px 8px;border-radius:6px;background:#2ecc71;color:#fff;font-weight:700;margin-left:6px}
+
+/* Returned icon styling */
+.returned-icon{display:inline-flex;align-items:center;justify-content:center;padding:6px;border-radius:6px;background:#fff;color:#e74c3c;border:1px solid #fdecea}
+.returned-icon svg{width:16px;height:16px}
+
 /* Admin inbox */
 #admin-inbox{margin-bottom:12px}
 #admin-inbox-list .approved-ul li{padding:8px;border-bottom:1px solid #eef2f6}
