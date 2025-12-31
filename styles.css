@@ -199,6 +199,17 @@ body.full-view main{min-height:calc(100vh - 220px)}
   text-decoration: none;
 }
 
+/* Navbar button-style link */
+.navbar .nav-btn{
+  background: linear-gradient(45deg, #4a90e2, #2752a7);
+  border-radius:6px;
+  margin-left:8px;
+  color:#fff;
+}
+.navbar .nav-btn:hover{
+  background: linear-gradient(45deg, #2752a7, #4a90e2);
+}
+
 /* The dropdown container */
 .dropdown {
   float: left;
