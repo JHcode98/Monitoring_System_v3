@@ -535,13 +535,19 @@ function renderAdminInbox(externalFilter){
     view.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
     view.style.marginLeft = '6px'; view.addEventListener('click', () => { openDocModal(d.controlNumber||d.control); }); actions.appendChild(view);
     if(d.forwarded){
-      const rec = document.createElement('button'); rec.type = 'button'; rec.className = 'icon-btn receive'; rec.title = 'Receive forwarded document'; rec.setAttribute('data-receive', d.controlNumber||d.control); rec.setAttribute('aria-label','Receive ' + (d.controlNumber||d.control)); rec.style.marginLeft = '6px';
+      const wrapRec = document.createElement('div'); wrapRec.className = 'icon-with-label';
+      const rec = document.createElement('button'); rec.type = 'button'; rec.className = 'icon-btn receive'; rec.title = 'Receive forwarded document'; rec.setAttribute('data-receive', d.controlNumber||d.control); rec.setAttribute('aria-label','Receive ' + (d.controlNumber||d.control));
       rec.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
-      actions.appendChild(rec);
+      const recLabel = document.createElement('span'); recLabel.className = 'btn-label-under'; recLabel.textContent = 'Receive';
+      wrapRec.appendChild(rec); wrapRec.appendChild(recLabel);
+      actions.appendChild(wrapRec);
     } else if(String(d.adminStatus).toLowerCase() === 'received'){
-      const ret = document.createElement('button'); ret.type = 'button'; ret.className = 'icon-btn return'; ret.title = 'Return to originator'; ret.setAttribute('data-return', d.controlNumber||d.control); ret.setAttribute('aria-label','Return ' + (d.controlNumber||d.control)); ret.style.marginLeft = '6px';
+      const wrapRet = document.createElement('div'); wrapRet.className = 'icon-with-label';
+      const ret = document.createElement('button'); ret.type = 'button'; ret.className = 'icon-btn return'; ret.title = 'Return to originator'; ret.setAttribute('data-return', d.controlNumber||d.control); ret.setAttribute('aria-label','Return ' + (d.controlNumber||d.control));
       ret.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 4 6 9 1"></polyline><path d="M20 22v-7a4 4 0 0 0-4-4H4"></path></svg>';
-      actions.appendChild(ret);
+      const retLabel = document.createElement('span'); retLabel.className = 'btn-label-under'; retLabel.textContent = 'Return';
+      wrapRet.appendChild(ret); wrapRet.appendChild(retLabel);
+      actions.appendChild(wrapRet);
     } else if(String(d.adminStatus).toLowerCase() === 'returned'){
       const lbl = document.createElement('span'); lbl.className = 'returned-label'; lbl.textContent = 'Returned'; lbl.style.marginLeft = '6px';
       actions.appendChild(lbl);
