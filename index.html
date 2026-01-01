@@ -27,7 +27,7 @@
 								<div id="clock" class="clock" aria-live="polite"></div>
 								<div id="sr-status" class="sr-only" aria-live="polite" aria-atomic="true"></div>
 								<div class="nav-user" id="nav-user">
-									<a class="user-btn" id="user-btn" href="profile.html"><span id="username-display"></span> <span id="role-badge" class="role-badge" style="display:none;margin-left:8px"></span></a>
+									<a class="user-btn" id="user-btn" href="profile.html"><span id="nav-avatar" class="avatar small" style="margin-right:8px"></span><span id="username-display"></span> <span id="role-badge" class="role-badge" style="display:none;margin-left:8px"></span></a>
 									<div class="user-menu" id="user-menu" role="menu" aria-label="User menu">
 										<a href="profile.html" id="profile-btn" role="menuitem">Profile</a>
 										<button id="logout-btn" role="menuitem">Logout</button>
@@ -137,8 +137,21 @@
               <label for="control-number">Control Number</label>
 			  <input id="control-number" name="controlNumber" placeholder="ECOM-20XX-XXXX" pattern="ECOM-[0-9]{4}-[0-9]{4}" title="Format: ECOM-YYYY-NNNN (e.g. ECOM-2026-0001)" required />
 
-              <label for="doc-title">Title</label>
-              <input id="doc-title" name="title" required />
+							<label for="doc-title">Title</label>
+							<select id="doc-title" name="title">
+								<option>Cycle Count</option>
+								<option>Retrieval Concerns</option>
+								<option>B1T1 Adj</option>
+								<option>LBR</option>
+								<option>Rejected Claims</option>
+								<option>SIS</option>
+								<option>Expired</option>
+								<option>Damaged</option>
+								<option>Manual Picked</option>
+								<option>Receiving Error</option>
+								<option>Other</option>
+							</select>
+							<input id="doc-title-other" name="titleOther" placeholder="Other title" style="display:none;margin-top:6px" />
 
               <label for="doc-notes">Notes</label>
               <textarea id="doc-notes" name="notes" rows="3"></textarea>
