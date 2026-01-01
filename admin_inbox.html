@@ -45,6 +45,10 @@
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="10" y1="21" x2="10" y2="10"></line><line x1="16" y1="21" x2="16" y2="6"></line></svg>
                   <span id="badge-forwarded-box" class="nav-badge badge-forwarded" aria-hidden="true" style="margin-left:8px;display:inline-block"></span>
                 </button>
+                <button id="receive-all-btn" class="icon-btn" title="Receive all forwarded" style="margin-left:8px" aria-label="Receive all forwarded">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  <span class="btn-label" style="margin-left:6px;display:none">Receive All</span>
+                </button>
                 <div id="admin-filter-menu-box" class="card" style="position:absolute;right:0;top:44px;display:none;padding:8px;min-width:180px;box-shadow:0 6px 18px rgba(0,0,0,0.12)">
                   <button class="icon-btn admin-filter-item-box" data-filter="forwarded" title="Show forwarded">Forwarded <span id="badge-forwarded-menu" class="nav-badge badge-forwarded" style="margin-left:8px">0</span></button>
                   <button class="icon-btn admin-filter-item-box" data-filter="received" title="Show received">Received <span id="badge-received-menu" class="nav-badge badge-received" style="margin-left:8px">0</span></button>
@@ -122,6 +126,9 @@
             try{ if(window.setAdminInboxFilter) window.setAdminInboxFilter(f); else { localStorage.setItem('dms_admin_inbox_filter', f); } }catch(e){}
             menuBox.style.display = 'none'; filterBtnBox.setAttribute('aria-expanded','false');
           }));
+          // wire receive-all button to batch function (if present)
+          const rbtn = document.getElementById('receive-all-btn');
+          if(rbtn){ rbtn.addEventListener('click', (ev) => { ev.preventDefault(); try{ if(window.batchReceiveForwarded) window.batchReceiveForwarded(); else alert('Batch receive not available'); }catch(e){ console.error(e); alert('Batch receive failed'); } }); }
         }
       });
     </script>
