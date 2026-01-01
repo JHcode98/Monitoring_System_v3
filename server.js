@@ -43,6 +43,22 @@ async function ensureDB(){
   const app = express();
   app.use(cors());
   app.use(express.json());
+  // middleware: update lastSeen on requests that provide a valid session token
+  app.use(async (req, res, next) => {
+    try{
+      const token = getSessionFromReq(req);
+      if(token){
+        const db = await readDB();
+        db.sessions = db.sessions || {};
+        if(db.sessions[token]){
+          db.sessions[token].lastSeen = Date.now();
+          // persist lastSeen (best-effort)
+          await writeDB(db);
+        }
+      }
+    }catch(e){}
+    next();
+  });
   const http = require('http');
   const WebSocket = require('ws');
 
@@ -222,6 +238,20 @@ async function ensureDB(){
     // include avatar if present (data URL) so admin dashboard can render it
     const safe = (db.users||[]).map(u => ({ id: u.id, username: u.username, role: u.role, createdAt: u.createdAt, avatar: u.avatar || null }));
     return res.json({ users: safe });
+  });
+
+  // List active sessions (admin only)
+  app.get('/api/sessions', async (req, res) => {
+    const db = await readDB();
+    const token = getSessionFromReq(req);
+    if(!token || !db.sessions || !db.sessions[token] || db.sessions[token].role !== 'admin'){
+      return res.status(403).json({ error: 'admin required' });
+    }
+    const list = Object.keys(db.sessions || {}).map(t => {
+      const s = db.sessions[t];
+      return { token: t, username: s.username, role: s.role, created: s.created, lastSeen: s.lastSeen || s.created };
+    });
+    return res.json({ sessions: list });
   });
 
   // GET user's avatar (public for demo)
