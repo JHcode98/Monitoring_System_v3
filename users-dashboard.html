@@ -24,7 +24,7 @@
     <div class="nav-title">Document Monitoring System</div>
     <div class="nav-right">
       <div class="nav-user">
-        <a class="user-btn" href="profile.html">Profile</a>
+        <a class="user-btn" href="profile.html"><span id="nav-avatar" class="avatar small" style="margin-right:8px"></span>Profile</a>
       </div>
     </div>
   </div>
@@ -40,7 +40,7 @@
     <div id="not-authorized" class="muted" style="display:none">Not authorized. Redirecting to login...</div>
     <table id="users-table">
       <thead>
-        <tr><th>Username</th><th>Role</th><th>Created</th><th>Actions</th></tr>
+        <tr><th>Avatar</th><th>Username</th><th>Role</th><th>Created</th><th>Actions</th></tr>
       </thead>
       <tbody></tbody>
     </table>
@@ -81,7 +81,8 @@
         serverUsers.forEach(u => {
           if(q && !(u.username||'').toLowerCase().includes(q)) return;
           const tr = document.createElement('tr');
-            tr.innerHTML = `<td>${u.username}</td><td><select data-user="${u.username}"><option value="user" ${u.role==='user'?'selected':''}>User</option><option value="admin" ${u.role==='admin'?'selected':''}>Admin</option></select></td><td>${u.createdAt?new Date(Number(u.createdAt)).toLocaleString():''}</td><td><button class="icon-btn" title="Delete user" data-delete="${u.username}" aria-label="Delete ${u.username}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path></svg></button></td>`;
+          const avatarHtml = u.avatar ? `<div class="avatar small"><img src="${u.avatar}" alt="avatar"></div>` : `<div class="avatar small">${(u.username||'').split(' ').map(s=>s[0]||'').join('').slice(0,2).toUpperCase() || '?'}</div>`;
+          tr.innerHTML = `<td style="width:56px">${avatarHtml}</td><td>${u.username}</td><td><select data-user="${u.username}"><option value="user" ${u.role==='user'?'selected':''}>User</option><option value="admin" ${u.role==='admin'?'selected':''}>Admin</option></select></td><td>${u.createdAt?new Date(Number(u.createdAt)).toLocaleString():''}</td><td><button class="icon-btn" title="Delete user" data-delete="${u.username}" aria-label="Delete ${u.username}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path></svg></button></td>`;
           t.appendChild(tr);
         });
         // wire server-side actions
@@ -112,7 +113,8 @@
         if(q && !k.toLowerCase().includes(q)) return;
         const u = users[k];
         const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${k}</td><td><select data-user="${k}"><option value="user" ${u.role==='user'?'selected':''}>User</option><option value="admin" ${u.role==='admin'?'selected':''}>Admin</option></select></td><td>${u.createdAt?new Date(Number(u.createdAt)).toLocaleString():''}</td><td><button class="icon-btn" title="Delete user" data-delete="${k}" aria-label="Delete ${k}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path></svg></button></td>`;
+        const avatarHtml = u && u.avatar ? `<div class="avatar small"><img src="${u.avatar}" alt="avatar"></div>` : `<div class="avatar small">${(k||'').split(' ').map(s=>s[0]||'').join('').slice(0,2).toUpperCase() || '?'}</div>`;
+        tr.innerHTML = `<td style="width:56px">${avatarHtml}</td><td>${k}</td><td><select data-user="${k}"><option value="user" ${u.role==='user'?'selected':''}>User</option><option value="admin" ${u.role==='admin'?'selected':''}>Admin</option></select></td><td>${u.createdAt?new Date(Number(u.createdAt)).toLocaleString():''}</td><td><button class="icon-btn" title="Delete user" data-delete="${k}" aria-label="Delete ${k}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path></svg></button></td>`;
         t.appendChild(tr);
       });
       // wire selects and deletes (local)
