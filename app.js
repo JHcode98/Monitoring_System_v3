@@ -771,6 +771,29 @@ function escapeHtml(s){
   return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"})[c]);
 }
 
+// Render small avatar in navbar. Prefer server avatar when available.
+function renderNavAvatar(){
+  try{
+    const el = document.getElementById('nav-avatar');
+    if(!el) return;
+    const local = localStorage.getItem('dms_profile_avatar');
+    const uname = localStorage.getItem(AUTH_KEY) || '';
+    // if server available, try fetching server avatar (async) and update when received
+    if(USE_SERVER && uname){
+      fetch(API_BASE + '/users/' + encodeURIComponent(uname) + '/avatar').then(r => r.json()).then(j => {
+        try{
+          const a = j && j.avatar ? j.avatar : local;
+          if(a) el.innerHTML = '<img src="'+a+'" alt="avatar">'; else { const initials = (uname||'').split(' ').map(s=>s[0]||'').join('').slice(0,2).toUpperCase() || '?'; el.innerHTML = initials; }
+        }catch(e){ if(local){ el.innerHTML = '<img src="'+local+'" alt="avatar">'; } }
+      }).catch(()=>{ if(local) el.innerHTML = '<img src="'+local+'" alt="avatar">'; else { const initials = (uname||'').split(' ').map(s=>s[0]||'').join('').slice(0,2).toUpperCase() || '?'; el.innerHTML = initials; } });
+      return;
+    }
+    if(local){ el.innerHTML = '<img src="'+local+'" alt="avatar">'; return; }
+    const initials = (uname||'').split(' ').map(s=>s[0]||'').join('').slice(0,2).toUpperCase() || '?'; el.innerHTML = initials;
+  }catch(e){}
+}
+window.renderNavAvatar = renderNavAvatar;
+
 function addOrUpdateDoc(doc){
   const idx = docs.findIndex(d => d.controlNumber === doc.controlNumber);
   if(idx >= 0){
@@ -978,6 +1001,7 @@ function showDashboard(userName){
   loadDocs();
   renderDocs();
   adjustUIForRole();
+  try{ renderNavAvatar(); }catch(e){}
   try{ updateAdminInboxBadge(); }catch(e){}
   startInactivityWatcher();
   try{ announceStatus('Signed in'); }catch(e){}
@@ -1588,6 +1612,8 @@ document.addEventListener('DOMContentLoaded', () => {
     loadDocs();
     if(loginSection) loginSection.classList.add('centered');
   }
+
+  try{ renderNavAvatar(); }catch(e){}
 
   // Sidebar search & page size
   const sidebarSearch = document.getElementById('sidebar-search');
