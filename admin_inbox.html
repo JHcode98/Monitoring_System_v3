@@ -15,13 +15,20 @@
             <a href="admin_inbox.html" id="admin-inbox-page-btn" class="nav-btn" title="Open Admin Inbox Page">Admin Inbox</a>
             <a href="recycle_bin.html" id="recycle-bin-page-btn" class="nav-btn" title="Open Recycle Bin">Recycle Bin</a>
           </div>
-        <div class="nav-center"><div class="nav-title">Document Monitoring System</div></div>
+        <div class="nav-center"><div class="nav-title">Monitoring System</div></div>
         <div class="nav-right">
           <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
             <span class="bar"></span>
             <span class="bar"></span>
             <span class="bar"></span>
           </button>
+          <div class="nav-user" id="nav-user" style="margin-left:12px">
+            <a class="user-btn" id="user-btn" href="profile.html"><span id="nav-avatar" class="avatar small" style="margin-right:8px"></span><span id="username-display"></span> <span id="role-badge" class="role-badge" style="display:none;margin-left:8px"></span></a>
+            <div class="user-menu" id="user-menu" role="menu" aria-label="User menu">
+              <a href="profile.html" id="profile-btn" role="menuitem">Profile</a>
+              <button id="logout-btn" role="menuitem">Logout</button>
+            </div>
+          </div>
         </div>
       </div>
     </header>
