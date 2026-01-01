@@ -47,7 +47,22 @@
       <div id="doc-content" class="hidden">
         <form id="doc-edit-form">
           <div class="doc-row"><div class="doc-label">Control #</div><div><input id="edit-control" name="controlNumber" required /></div></div>
-          <div class="doc-row"><div class="doc-label">Title</div><div><input id="edit-title" name="title" required /></div></div>
+          <div class="doc-row"><div class="doc-label">Title</div><div>
+            <select id="edit-title" name="title">
+              <option>Cycle Count</option>
+              <option>Retrieval Concerns</option>
+              <option>B1T1 Adj</option>
+              <option>LBR</option>
+              <option>Rejected Claims</option>
+              <option>SIS</option>
+              <option>Expired</option>
+              <option>Damaged</option>
+              <option>Manual Picked</option>
+              <option>Receiving Error</option>
+              <option>Other</option>
+            </select>
+            <input id="edit-title-other" name="titleOther" placeholder="Other title" style="display:none;margin-top:6px" />
+          </div></div>
           <div class="doc-row"><div class="doc-label">Owner</div><div><input id="edit-owner" name="owner" /></div></div>
           <div class="doc-row"><div class="doc-label">Status</div><div><select id="edit-status" name="status"><option>Revision</option><option>Routing</option><option>Approved</option><option>Rejected</option></select></div></div>
           <div class="doc-row"><div class="doc-label">WINS Status</div><div><select id="edit-wins" name="winsStatus"><option>Approved</option><option>Pending for Approve</option><option>Rejected</option></select></div></div>
@@ -108,19 +123,48 @@
         document.getElementById('doc-content').classList.remove('hidden');
         document.getElementById('edit-control').value = doc.controlNumber || '';
         document.getElementById('original-control').value = doc.controlNumber || '';
-        document.getElementById('edit-title').value = doc.title || '';
+        // set title select / other
+        try{
+          const sel = document.getElementById('edit-title');
+          const other = document.getElementById('edit-title-other');
+          if(sel){
+            const opts = Array.from(sel.options).map(o => o.value);
+            if(opts.includes(doc.title)){
+              sel.value = doc.title;
+              if(other) other.style.display = 'none';
+            } else {
+              sel.value = 'Other';
+              if(other){ other.style.display = ''; other.value = doc.title || ''; }
+            }
+          }
+        }catch(e){}
         document.getElementById('edit-owner').value = doc.owner || '';
         document.getElementById('edit-status').value = doc.status || 'Revision';
         document.getElementById('edit-wins').value = doc.winsStatus || 'Pending for Approve';
         document.getElementById('edit-created').value = msToDatetimeLocal(doc.createdAt);
         document.getElementById('edit-notes').value = doc.notes || '';
 
+        // wire change to toggle other input
+        try{
+          const sel = document.getElementById('edit-title');
+          const other = document.getElementById('edit-title-other');
+          if(sel){ sel.addEventListener('change', () => { if(other) other.style.display = (sel.value === 'Other') ? '' : 'none'; }); }
+        }catch(e){}
+
         const form = document.getElementById('doc-edit-form');
         form.addEventListener('submit', e => {
           e.preventDefault();
           const controlNumber = document.getElementById('edit-control').value.trim();
           const original = document.getElementById('original-control').value || '';
-          const title = document.getElementById('edit-title').value.trim();
+          // title may be a select with Other
+          let title = '';
+          try{
+            const sel = document.getElementById('edit-title');
+            if(sel && sel.tagName === 'SELECT'){
+              if(sel.value === 'Other'){ const oth = document.getElementById('edit-title-other'); title = oth ? (oth.value||'').trim() : ''; }
+              else title = (sel.value || '').trim();
+            } else { title = (document.getElementById('edit-title').value || '').trim(); }
+          }catch(e){ title = (document.getElementById('edit-title').value || '').trim(); }
           const owner = document.getElementById('edit-owner').value.trim();
           const status = document.getElementById('edit-status').value;
           const winsStatus = document.getElementById('edit-wins').value;
