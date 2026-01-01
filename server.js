@@ -134,7 +134,7 @@ async function ensureDB(){
     const passHash = bcrypt.hashSync(password, 10);
     const id = uuidv4();
     db.users = db.users || [];
-    db.users.push({ id, username, passwordHash: passHash, role: requestedRole, createdAt: Date.now() });
+    db.users.push({ id, username, passwordHash: passHash, role: requestedRole, createdAt: Date.now(), avatar: null });
     await writeDB(db);
     return res.json({ ok:true, username, role: requestedRole });
   });
@@ -219,8 +219,35 @@ async function ensureDB(){
     if(!token || !db.sessions || !db.sessions[token] || db.sessions[token].role !== 'admin'){
       return res.status(403).json({ error: 'admin required' });
     }
-    const safe = (db.users||[]).map(u => ({ id: u.id, username: u.username, role: u.role, createdAt: u.createdAt }));
+    // include avatar if present (data URL) so admin dashboard can render it
+    const safe = (db.users||[]).map(u => ({ id: u.id, username: u.username, role: u.role, createdAt: u.createdAt, avatar: u.avatar || null }));
     return res.json({ users: safe });
+  });
+
+  // GET user's avatar (public for demo)
+  app.get('/api/users/:username/avatar', async (req,res) => {
+    const { username } = req.params || {};
+    const db = await readDB();
+    const user = (db.users||[]).find(u => u.username === username);
+    if(!user) return res.status(404).json({ error: 'not found' });
+    return res.json({ avatar: user.avatar || null });
+  });
+
+  // PUT user's avatar (must be owner or admin)
+  app.put('/api/users/:username/avatar', async (req,res) => {
+    const { username } = req.params || {};
+    const { avatar } = req.body || {};
+    if(!(typeof avatar === 'string' || avatar === null)) return res.status(400).json({ error: 'avatar string or null required' });
+    const db = await readDB();
+    const token = getSessionFromReq(req);
+    const session = token && db.sessions && db.sessions[token];
+    if(!session) return res.status(403).json({ error: 'auth required' });
+    if(session.username !== username && session.role !== 'admin') return res.status(403).json({ error: 'forbidden' });
+    const user = (db.users||[]).find(u => u.username === username);
+    if(!user) return res.status(404).json({ error: 'not found' });
+    user.avatar = avatar;
+    await writeDB(db);
+    return res.json({ ok:true });
   });
 
   // Update user role (admin only)
