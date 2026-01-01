@@ -40,29 +40,39 @@
 
     <script>
       const STORAGE_KEY = 'dms_docs_v1';
+
       async function loadDocs(){
-        let docs = [];
-        // try API first if API_BASE is available
+        // Prefer API if available, otherwise fallback to localStorage
         try{
-          if(typeof API_BASE !== 'undefined'){
-            const res = await fetch((API_BASE||'') + '/api/docs');
-            if(res.ok){ docs = await res.json(); }
+          const base = (typeof API_BASE !== 'undefined' && API_BASE) ? API_BASE : '';
+          const res = await fetch(base + '/api/docs', {cache: 'no-store'});
+          if(res && res.ok){
+            const json = await res.json();
+            if(Array.isArray(json) && json.length) return json;
           }
-        }catch(e){}
-        if(!docs || !docs.length){
-          try{ docs = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
-          catch(e){ docs = []; }
-        }
-        return docs || [];
+        }catch(e){ /* ignore and fallback */ }
+
+        try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]') || []; }
+        catch(e){ return []; }
       }
 
       function aggregateCount(items, keyFn){
         const map = Object.create(null);
         items.forEach(it => {
-          const k = (keyFn(it) || 'Unknown');
+          const k = (keyFn(it) || 'Unknown').trim() || 'Unknown';
           map[k] = (map[k] || 0) + 1;
         });
         return map;
+      }
+
+      // Summarize map to top N keys, grouping the rest into 'Other'
+      function summarizeMap(map, topN = 10){
+        const entries = Object.entries(map).sort((a,b)=>b[1]-a[1]);
+        if(entries.length <= topN) return entries;
+        const top = entries.slice(0, topN);
+        const other = entries.slice(topN).reduce((s,[_k,v]) => s+v, 0);
+        top.push(['Other', other]);
+        return top;
       }
 
       function renderBar(ctx, labels, data, title, color){
@@ -72,20 +82,30 @@
             labels: labels,
             datasets: [{ label: title, data: data, backgroundColor: color || 'rgba(54,162,235,0.6)' }]
           },
-          options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false }, tooltip: { mode: 'index' } },
+            scales: {
+              x: { ticks: { maxRotation: 45, autoSkip: true }, grid: { display: false } },
+              y: { beginAtZero: true }
+            }
+          }
         });
       }
 
       (async ()=>{
         const docs = await loadDocs();
-        const byTitle = aggregateCount(docs, d => d.title);
-        const byOwner = aggregateCount(docs, d => d.owner);
+        const byTitle = aggregateCount(docs, d => d.title || 'Unknown');
+        const byOwner = aggregateCount(docs, d => d.owner || 'Unknown');
 
-        const titleLabels = Object.keys(byTitle).sort((a,b)=>byTitle[b]-byTitle[a]);
-        const titleData = titleLabels.map(l => byTitle[l]);
+        const topTitles = summarizeMap(byTitle, 10);
+        const titleLabels = topTitles.map(e => e[0]);
+        const titleData = topTitles.map(e => e[1]);
 
-        const ownerLabels = Object.keys(byOwner).sort((a,b)=>byOwner[b]-byOwner[a]);
-        const ownerData = ownerLabels.map(l => byOwner[l]);
+        const topOwners = summarizeMap(byOwner, 10);
+        const ownerLabels = topOwners.map(e => e[0]);
+        const ownerData = topOwners.map(e => e[1]);
 
         const ctxTitle = document.getElementById('chart-title').getContext('2d');
         const ctxOwner = document.getElementById('chart-owner').getContext('2d');
