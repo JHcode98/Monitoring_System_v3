@@ -40,8 +40,21 @@
         <p>Role: <strong id="profile-role-val"> </strong></p>
         <div style="margin-top:12px">
           <button id="profile-signout">Sign Out</button>
+          <button id="change-password-btn" style="margin-left:8px">Change Password</button>
           <a href="index.html" style="margin-left:8px">Back</a>
         </div>
+      </div>
+      <div id="change-password-card" class="card hidden" style="margin-top:12px">
+        <h3>Change Password</h3>
+        <form id="change-password-form">
+          <label>Current Password</label>
+          <input id="current-password" type="password" />
+          <label>New Password</label>
+          <input id="new-password" type="password" />
+          <label>Confirm New Password</label>
+          <input id="new-password-confirm" type="password" />
+          <div style="margin-top:8px"><button type="submit">Change Password</button><button type="button" id="cancel-change-password" style="margin-left:8px">Cancel</button></div>
+        </form>
       </div>
     </main>
 
@@ -57,6 +70,13 @@
         try{ document.getElementById('profile-role-val').textContent = localStorage.getItem('dms_auth_role_v1') || '' }catch(e){}
         const signout = document.getElementById('profile-signout');
         if(signout){ signout.addEventListener('click', () => { try{ localStorage.removeItem('dms_auth_v1'); localStorage.removeItem('dms_auth_role_v1'); }catch(e){}; try{ window.signOut && window.signOut(); }catch(ex){}; window.location.href = 'index.html'; }); }
+        const cpBtn = document.getElementById('change-password-btn');
+        const cpCard = document.getElementById('change-password-card');
+        const cpForm = document.getElementById('change-password-form');
+        const cancelCp = document.getElementById('cancel-change-password');
+        if(cpBtn && cpCard){ cpBtn.addEventListener('click', () => { cpCard.classList.toggle('hidden'); }); }
+        if(cancelCp && cpCard){ cancelCp.addEventListener('click', () => { cpCard.classList.add('hidden'); cpForm.reset(); }); }
+        if(cpForm){ cpForm.addEventListener('submit', (ev) => { ev.preventDefault(); const oldPwd = document.getElementById('current-password').value || ''; const newPwd = document.getElementById('new-password').value || ''; const newPc = document.getElementById('new-password-confirm').value || ''; if(!oldPwd || !newPwd){ alert('Both current and new passwords required'); return; } if(newPwd !== newPc){ alert('New passwords do not match'); return; } try{ window.changePassword(oldPwd, newPwd).then(res => { if(res && res.ok){ alert('Password changed'); cpCard.classList.add('hidden'); cpForm.reset(); } else { alert((res && res.error) || 'Change failed'); } }); }catch(e){ alert('Error changing password'); } }); }
       });
     </script>
   </body>
