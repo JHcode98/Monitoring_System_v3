@@ -70,6 +70,7 @@
           <div class="doc-row"><div class="doc-label">Notes</div><div><textarea id="edit-notes" name="notes" rows="6"></textarea></div></div>
           <div style="margin-top:12px;display:flex;gap:8px">
             <button type="submit">Save Changes</button>
+            <button type="button" id="export-pdf-btn">Export PDF</button>
             <a href="index.html">Cancel</a>
           </div>
           <input type="hidden" id="original-control" />
@@ -84,7 +85,7 @@
     <script>
       const STORAGE_KEY = 'dms_docs_v1';
       function queryParam(name){
-    <!-- profile moved to profile.html -->
+        // profile moved to profile.html
         const u = new URL(location.href);
         return u.searchParams.get(name);
       }
@@ -196,6 +197,40 @@
           // redirect back to dashboard (optional)
           window.location.href = 'index.html';
         });
+      });
+    </script>
+    <!-- html2canvas and jsPDF for PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+      // PDF export using html2canvas + jsPDF
+      async function exportDocToPDF(){
+        const btn = document.getElementById('export-pdf-btn');
+        if(!btn) return;
+        btn.disabled = true; btn.textContent = 'Generating...';
+        const el = document.querySelector('.doc-detail');
+        try{
+          if(typeof html2canvas === 'undefined'){ throw new Error('html2canvas library not loaded'); }
+          if(!window.jspdf || typeof window.jspdf.jsPDF !== 'function'){ throw new Error('jsPDF library not loaded'); }
+          const canvas = await html2canvas(el, {scale:2});
+          const imgData = canvas.toDataURL('image/png');
+          const { jsPDF } = window.jspdf;
+          const pdf = new jsPDF('p','pt','a4');
+          const imgProps = pdf.getImageProperties(imgData);
+          const pdfWidth = pdf.internal.pageSize.getWidth();
+          const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+          pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+          const filename = (document.getElementById('edit-control')?.value || 'document') + '.pdf';
+          pdf.save(filename);
+        }catch(err){
+          alert('PDF export failed: ' + (err && err.message ? err.message : err));
+        }finally{
+          btn.disabled = false; btn.textContent = 'Export PDF';
+        }
+      }
+      document.addEventListener('DOMContentLoaded', ()=>{
+        const pdfBtn = document.getElementById('export-pdf-btn');
+        if(pdfBtn) pdfBtn.addEventListener('click', exportDocToPDF);
       });
     </script>
   </body>
