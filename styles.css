@@ -72,12 +72,11 @@ footer{max-width:980px;margin:6px auto;padding:6px 16px;color:var(--muted)}
 .sidebar-toggle{position:absolute;left:260px;top:14px;width:34px;height:40px;border-radius:6px;border:1px solid #e6eef8;background:#ffffff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--accent);box-shadow:0 1px 3px rgba(0,0,0,0.08);z-index:2200}
 /* When sidebar is collapsed, move the toggle to the left edge */
 .left-sidebar.collapsed + .sidebar-toggle{left:4px}
-.left-sidebar.collapsed{width:0;min-width:0;padding:0;overflow:hidden;opacity:0;visibility:hidden;pointer-events:none}
-.left-sidebar.collapsed .approved-list, .left-sidebar.collapsed h3, .left-sidebar.collapsed .sidebar-controls, .left-sidebar.collapsed .sidebar-pagination { display:none !important; }
-.left-sidebar{transition:width 200ms ease, opacity 200ms ease}
+.left-sidebar.collapsed{width:0;flex-basis:0;min-width:0;padding-left:0;padding-right:0;overflow:hidden;opacity:0;visibility:hidden;pointer-events:none}
+.left-sidebar{transition:width 300ms cubic-bezier(0.4, 0, 0.2, 1), flex-basis 300ms cubic-bezier(0.4, 0, 0.2, 1), padding 300ms ease, opacity 300ms ease}
 
 /* Ensure toggle moves smoothly */
-.sidebar-toggle{transition:left 200ms ease, transform 200ms ease}
+.sidebar-toggle{transition:left 300ms cubic-bezier(0.4, 0, 0.2, 1), transform 300ms ease}
 
 /* Role badge */
 .role-badge{display:inline-block;padding:4px 8px;border-radius:6px;background:#eef4ff;color:var(--accent);font-weight:700;font-size:12px}
@@ -309,6 +308,13 @@ body{padding-top:64px}
   .tools{flex-direction:column}
   /* make table responsive */
   .full-results{overflow-x:auto}
+
+  /* Fix sidebar responsiveness: stack layout */
+  .layout { flex-direction: column; }
+  .left-sidebar { width: 100%; flex: none; max-height: 300px; }
+  .sidebar-toggle { display: none; }
+  /* Ensure sidebar is visible if it was collapsed on desktop */
+  .left-sidebar.collapsed { width: 100%; height: auto; opacity: 1; visibility: visible; pointer-events: auto; }
 }
 
 @media (max-width: 420px) {
