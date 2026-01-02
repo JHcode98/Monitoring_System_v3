@@ -286,6 +286,31 @@ function renderDocs(filter){
 }
   try{ updateAdminInboxBadge(); }catch(e){}
 
+function drawPieChart(canvasId, data) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  const total = Object.values(data).reduce((a, b) => a + b, 0);
+  if(total === 0) return;
+
+  let startAngle = 0;
+  const colors = ['#2752a7', '#4a90e2', '#f39c12', '#e74c3c', '#2ecc71', '#9b59b6', '#34495e', '#95a5a6'];
+  const sorted = Object.entries(data).sort((a,b) => b[1] - a[1]);
+
+  sorted.forEach(([key, value], index) => {
+    const sliceAngle = (value / total) * 2 * Math.PI;
+    ctx.beginPath();
+    ctx.moveTo(canvas.width / 2, canvas.height / 2);
+    ctx.arc(canvas.width / 2, canvas.height / 2, Math.min(canvas.width, canvas.height) / 2 - 5, startAngle, startAngle + sliceAngle);
+    ctx.closePath();
+    ctx.fillStyle = colors[index % colors.length];
+    ctx.fill();
+    startAngle += sliceAngle;
+  });
+}
+
 function renderDashboardSummaries(currentList){
   const titleContainer = document.getElementById('summary-by-title');
   const ownerContainer = document.getElementById('summary-by-owner');
@@ -302,20 +327,29 @@ function renderDashboardSummaries(currentList){
     byOwner[o] = (byOwner[o] || 0) + 1;
   });
 
+  const colors = ['#2752a7', '#4a90e2', '#f39c12', '#e74c3c', '#2ecc71', '#9b59b6', '#34495e', '#95a5a6'];
+
   // Helper to render list
-  const render = (map, container) => {
+  const render = (map, container, isTitle) => {
     const sorted = Object.entries(map).sort((a,b) => b[1] - a[1]);
     if(sorted.length === 0) { container.innerHTML = '<div class="muted">No data</div>'; return; }
-    let html = '<ul class="approved-ul">';
-    sorted.forEach(([k, v]) => {
-      html += `<li style="padding:6px 0;border-bottom:1px solid #eee;display:flex;justify-content:space-between"><span>${escapeHtml(k)}</span> <span class="nav-badge" style="background:#eef4ff;color:#2752a7">${v}</span></li>`;
+    
+    let html = '';
+    if(isTitle) html += '<div style="text-align:center;margin-bottom:12px"><canvas id="title-pie-chart" width="160" height="160"></canvas></div>';
+    
+    html += '<ul class="approved-ul">';
+    sorted.forEach(([k, v], idx) => {
+      const color = colors[idx % colors.length];
+      const dot = isTitle ? `<span style="display:inline-block;width:10px;height:10px;background:${color};border-radius:50%;margin-right:8px;"></span>` : '';
+      html += `<li style="padding:6px 0;border-bottom:1px solid #eee;display:flex;justify-content:space-between;cursor:pointer" onclick="window.location.href='documents_full.html?q=${encodeURIComponent(k)}'" title="Filter by ${escapeHtml(k)}"><span>${dot}${escapeHtml(k)}</span> <span class="nav-badge" style="background:#eef4ff;color:#2752a7">${v}</span></li>`;
     });
     html += '</ul>';
     container.innerHTML = html;
+    if(isTitle) setTimeout(() => drawPieChart('title-pie-chart', map), 0);
   };
 
-  render(byTitle, titleContainer);
-  render(byOwner, ownerContainer);
+  render(byTitle, titleContainer, true);
+  render(byOwner, ownerContainer, false);
 }
 
 function computeWinsCounts(){
@@ -1077,7 +1111,13 @@ function showDashboard(userName){
   // restore role from storage if available
   try{ currentUserRole = localStorage.getItem(AUTH_ROLE_KEY) || currentUserRole; }catch(e){}
   loadDocs();
-  renderDocs();
+  
+  // Check for URL query param 'q' to filter docs immediately
+  const params = new URLSearchParams(window.location.search);
+  const q = params.get('q');
+  if(q && searchInput){ searchInput.value = q; renderDocs(q); }
+  else { renderDocs(); }
+
   adjustUIForRole();
   try{ renderNavAvatar(); }catch(e){}
   // wire title selects to show/hide 'Other' input if present
