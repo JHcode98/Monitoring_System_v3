@@ -244,5 +244,19 @@
 
 			<script src="app.js"></script>
 			<!-- profile moved to profile.html -->
+			<script>
+				// Sidebar toggle logic
+				document.addEventListener('DOMContentLoaded', () => {
+					const toggleBtn = document.getElementById('sidebar-toggle');
+					const sidebar = document.getElementById('left-sidebar');
+					if(toggleBtn && sidebar) {
+						toggleBtn.addEventListener('click', () => {
+							sidebar.classList.toggle('collapsed');
+							toggleBtn.textContent = sidebar.classList.contains('collapsed') ? "›" : "‹";
+							toggleBtn.setAttribute('aria-expanded', !sidebar.classList.contains('collapsed'));
+						});
+					}
+				});
+			</script>
 	</body>
 </html>
