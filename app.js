@@ -182,7 +182,7 @@ function saveDocs(){
 
 function renderDocs(filter){
   if(selectAll) selectAll.checked = false;
-  docsTableBody.innerHTML = '';
+  if(docsTableBody) docsTableBody.innerHTML = '';
   const q = filter ? filter.toLowerCase() : '';
   let list = docs.slice();
   if(q){
@@ -203,13 +203,17 @@ function renderDocs(filter){
     list = list.filter(d => d.status === ageStatusFilter);
   }
   if(list.length === 0){
-    const tr = document.createElement('tr');
-    tr.innerHTML = '<td colspan="12" class="muted">No documents found.</td>';
-    docsTableBody.appendChild(tr);
+    if(docsTableBody){
+      const tr = document.createElement('tr');
+      tr.innerHTML = '<td colspan="12" class="muted">No documents found.</td>';
+      docsTableBody.appendChild(tr);
+    }
+    renderDashboardSummaries(list);
     return;
   }
 
-  list.forEach(doc => {
+  if(docsTableBody){
+    list.forEach(doc => {
     const tr = document.createElement('tr');
     const createdText = doc.createdAt ? msToDatetimeLocal(doc.createdAt).replace('T',' ') : '';
     const updatedText = doc.updatedAt ? new Date(doc.updatedAt).toLocaleString() : '';
@@ -270,14 +274,49 @@ function renderDocs(filter){
       </td> 
     `;
     docsTableBody.appendChild(tr);
-  });
+    });
+  }
   renderTotalDocs();
   renderStatusChart();
   renderWinsChart();
   renderAdminStatusOverview();
   renderAgeOverview();
-  renderLeftSidebar();}
+  renderLeftSidebar();
+  renderDashboardSummaries(list);
+}
   try{ updateAdminInboxBadge(); }catch(e){}
+
+function renderDashboardSummaries(currentList){
+  const titleContainer = document.getElementById('summary-by-title');
+  const ownerContainer = document.getElementById('summary-by-owner');
+  if(!titleContainer || !ownerContainer) return;
+
+  const list = currentList || docs;
+  const byTitle = {};
+  const byOwner = {};
+  
+  list.forEach(d => {
+    const t = d.title || 'Unknown';
+    byTitle[t] = (byTitle[t] || 0) + 1;
+    const o = d.owner || 'Unknown';
+    byOwner[o] = (byOwner[o] || 0) + 1;
+  });
+
+  // Helper to render list
+  const render = (map, container) => {
+    const sorted = Object.entries(map).sort((a,b) => b[1] - a[1]);
+    if(sorted.length === 0) { container.innerHTML = '<div class="muted">No data</div>'; return; }
+    let html = '<ul class="approved-ul">';
+    sorted.forEach(([k, v]) => {
+      html += `<li style="padding:6px 0;border-bottom:1px solid #eee;display:flex;justify-content:space-between"><span>${escapeHtml(k)}</span> <span class="nav-badge" style="background:#eef4ff;color:#2752a7">${v}</span></li>`;
+    });
+    html += '</ul>';
+    container.innerHTML = html;
+  };
+
+  render(byTitle, titleContainer);
+  render(byOwner, ownerContainer);
+}
 
 function computeWinsCounts(){
   const counts = { 'Approved':0, 'Pending for Approve':0, 'Rejected':0 };
@@ -1404,7 +1443,7 @@ docForm.addEventListener('submit', e => {
   renderDocs();
 });
 
-docsTableBody.addEventListener('click', e => {
+if(docsTableBody) docsTableBody.addEventListener('click', e => {
   // Quick-edit notes handling
   const noteEditBtn = e.target.closest('button[data-note-edit]');
   if(noteEditBtn){
@@ -1575,7 +1614,7 @@ docsTableBody.addEventListener('click', e => {
       });
     }
 
-docsTableBody.addEventListener('change', e => {
+if(docsTableBody) docsTableBody.addEventListener('change', e => {
   const sel = e.target.closest('.status-select');
   if(sel){
     const ctl = sel.getAttribute('data-control');
@@ -2208,7 +2247,7 @@ selectAll && selectAll.addEventListener('change', () => {
 });
 
 bulkDeleteBtn && bulkDeleteBtn.addEventListener('click', () => {
-  const selected = Array.from(docsTableBody.querySelectorAll('.row-checkbox:checked')).map(cb => cb.value);
+  const selected = docsTableBody ? Array.from(docsTableBody.querySelectorAll('.row-checkbox:checked')).map(cb => cb.value) : [];
   if(selected.length === 0){
     alert('No documents selected.');
     return;
@@ -2220,7 +2259,7 @@ bulkDeleteBtn && bulkDeleteBtn.addEventListener('click', () => {
 });
 
 bulkUpdateBtn && bulkUpdateBtn.addEventListener('click', () => {
-  const selected = Array.from(docsTableBody.querySelectorAll('.row-checkbox:checked')).map(cb => cb.value);
+  const selected = docsTableBody ? Array.from(docsTableBody.querySelectorAll('.row-checkbox:checked')).map(cb => cb.value) : [];
   if(selected.length === 0){
     alert('No documents selected.');
     return;
@@ -2239,7 +2278,7 @@ bulkUpdateBtn && bulkUpdateBtn.addEventListener('click', () => {
   }
 });
 
-docsTableBody.addEventListener('change', e => {
+if(docsTableBody) docsTableBody.addEventListener('change', e => {
   if(e.target.classList.contains('row-checkbox')){
     e.target.closest('tr').classList.toggle('selected-row', e.target.checked);
   }
