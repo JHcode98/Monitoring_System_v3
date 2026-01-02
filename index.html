@@ -123,6 +123,7 @@
 					<div class="right">
 						<input id="search-control" placeholder="Search control number..." />
 						<button id="search-btn">Search</button>
+						<button id="filter-30-days" title="Show only documents from the last 30 days">Last 30 Days</button>
 						<button id="clear-search">Clear</button>
 						<button id="bulk-update">Update Selected</button>
 						<button id="bulk-delete">Delete Selected</button>
@@ -240,19 +241,5 @@
 
 			<script src="app.js"></script>
 			<!-- profile moved to profile.html -->
-			<script>
-				// Sidebar toggle logic
-				document.addEventListener('DOMContentLoaded', () => {
-					const toggleBtn = document.getElementById('sidebar-toggle');
-					const sidebar = document.getElementById('left-sidebar');
-					if(toggleBtn && sidebar) {
-						toggleBtn.addEventListener('click', () => {
-							sidebar.classList.toggle('collapsed');
-							toggleBtn.textContent = sidebar.classList.contains('collapsed') ? "›" : "‹";
-							toggleBtn.setAttribute('aria-expanded', !sidebar.classList.contains('collapsed'));
-						});
-					}
-				});
-			</script>
 	</body>
 </html>
