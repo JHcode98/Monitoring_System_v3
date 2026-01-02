@@ -3,6 +3,8 @@ import json
 import random
 import logging
 import sqlite3
+import urllib.request
+import urllib.error
 from dataclasses import dataclass, field
 from typing import Any, Dict, List
 from enum import Enum
@@ -65,6 +67,35 @@ class SystemResourceCollector(ICollector):
             value=mem_val,
             tags={"host": "localhost"}
         ))
+        return metrics
+
+class WebsiteStatusCollector(ICollector):
+    def __init__(self, url: str):
+        self.url = url
+
+    def collect(self) -> List[Metric]:
+        metrics = []
+        try:
+            # Set a timeout to prevent blocking the monitoring loop indefinitely
+            with urllib.request.urlopen(self.url, timeout=5) as response:
+                metrics.append(Metric(
+                    name="website_status",
+                    value=float(response.getcode()),
+                    tags={"url": self.url}
+                ))
+        except urllib.error.HTTPError as e:
+            metrics.append(Metric(
+                name="website_status",
+                value=float(e.code),
+                tags={"url": self.url}
+            ))
+        except Exception as e:
+            logger.error(f"Website check failed for {self.url}: {e}")
+            metrics.append(Metric(
+                name="website_status",
+                value=0.0, # 0 indicates connection failure
+                tags={"url": self.url}
+            ))
         return metrics
 
 class ConsoleAlertChannel(IAlertChannel):
@@ -170,6 +201,7 @@ CONFIG = {
 if __name__ == "__main__":
     engine = MonitoringEngine(CONFIG)
     engine.register_collector(SystemResourceCollector())
+    engine.register_collector(WebsiteStatusCollector("http://example.com"))
     engine.register_alerter(ConsoleAlertChannel())
     engine.register_storage(SQLiteStorage("history.db"))
     
