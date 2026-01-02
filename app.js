@@ -108,6 +108,7 @@ const cancelNew = document.getElementById('cancel-new');
 const docsTableBody = document.querySelector('#docs-table tbody');
 const searchInput = document.getElementById('search-control');
 const searchBtn = document.getElementById('search-btn');
+const filter30DaysBtn = document.getElementById('filter-30-days');
 const clearSearchBtn = document.getElementById('clear-search');
 const importFileInput = document.getElementById('import-file');
 const exportCsvBtn = document.getElementById('export-csv');
@@ -118,6 +119,7 @@ const notesInput = document.getElementById('doc-notes');
 let docs = [];
 let statusFilter = null; // e.g. 'Revision', 'Approved', etc.
 let winsFilter = null; // e.g. 'Approved', 'Pending for Approve', 'Rejected'
+let dateFilter30Days = false;
 let ageStatusFilter = null; // will mirror statusFilter when filtering by age row clicks
 
 // Sidebar search & pagination state
@@ -201,6 +203,10 @@ function renderDocs(filter){
   }
   if(ageStatusFilter){
     list = list.filter(d => d.status === ageStatusFilter);
+  }
+  if(dateFilter30Days){
+    const cutoff = Date.now() - (30 * 24 * 60 * 60 * 1000);
+    list = list.filter(d => d.createdAt && Number(d.createdAt) >= cutoff);
   }
   if(list.length === 0){
     if(docsTableBody){
@@ -311,6 +317,42 @@ function drawPieChart(canvasId, data) {
   });
 }
 
+function drawBarChart(canvasId, data) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const width = canvas.width;
+  const height = canvas.height;
+  ctx.clearRect(0, 0, width, height);
+
+  const entries = Object.entries(data).sort((a,b) => b[1] - a[1]).slice(0, 8); // Top 8
+  if (entries.length === 0) return;
+
+  const maxVal = Math.max(...entries.map(e => e[1]));
+  const barWidth = (width - 40) / entries.length;
+  const gap = 5;
+  const chartHeight = height - 20;
+
+  entries.forEach((entry, i) => {
+    const val = entry[1];
+    const barH = maxVal > 0 ? (val / maxVal) * (chartHeight - 20) : 0;
+    const x = 20 + i * barWidth;
+    const y = chartHeight - barH;
+    
+    ctx.fillStyle = '#2752a7';
+    ctx.fillRect(x, y, barWidth - gap, barH);
+    
+    ctx.fillStyle = '#333';
+    ctx.font = '10px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText(val, x + (barWidth - gap)/2, y - 5);
+    
+    // Simple label truncation
+    const label = entry[0].length > 6 ? entry[0].substring(0,6)+'..' : entry[0];
+    ctx.fillText(label, x + (barWidth - gap)/2, chartHeight + 12);
+  });
+}
+
 function renderDashboardSummaries(currentList){
   const titleContainer = document.getElementById('summary-by-title');
   const ownerContainer = document.getElementById('summary-by-owner');
@@ -336,6 +378,7 @@ function renderDashboardSummaries(currentList){
     
     let html = '';
     if(isTitle) html += '<div style="text-align:center;margin-bottom:12px"><canvas id="title-pie-chart" width="160" height="160"></canvas></div>';
+    else html += '<div style="text-align:center;margin-bottom:12px"><canvas id="owner-bar-chart" width="280" height="160"></canvas></div>';
     
     html += '<ul class="approved-ul">';
     sorted.forEach(([k, v], idx) => {
@@ -346,6 +389,7 @@ function renderDashboardSummaries(currentList){
     html += '</ul>';
     container.innerHTML = html;
     if(isTitle) setTimeout(() => drawPieChart('title-pie-chart', map), 0);
+    else setTimeout(() => drawBarChart('owner-bar-chart', map), 0);
   };
 
   render(byTitle, titleContainer, true);
@@ -1685,6 +1729,14 @@ searchBtn.addEventListener('click', () => {
   const q = searchInput.value.trim();
   renderDocs(q);
 });
+
+if(filter30DaysBtn){
+  filter30DaysBtn.addEventListener('click', () => {
+    dateFilter30Days = !dateFilter30Days;
+    filter30DaysBtn.classList.toggle('active-filter', dateFilter30Days);
+    renderDocs(searchInput.value.trim());
+  });
+}
 
 clearSearchBtn.addEventListener('click', () => {
   searchInput.value = '';
