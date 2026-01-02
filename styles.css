@@ -4,6 +4,36 @@
   --accent:#2752a7;
   --muted:#666;
 }
+/* Dark Mode Variables */
+body.dark-mode {
+  --bg: #121212;
+  --card: #1e1e1e;
+  --accent: #64b5f6;
+  --muted: #b0bec5;
+  color: #e0e0e0;
+  background-image: none;
+  background-color: var(--bg);
+}
+body.dark-mode input, body.dark-mode select, body.dark-mode textarea {
+  background-color: #2c2c2c;
+  color: #fff;
+  border-color: #444;
+}
+body.dark-mode .card, body.dark-mode .modal-content, body.dark-mode .sidebar-toggle, body.dark-mode #admin-filter-menu-box {
+  background-color: var(--card);
+  color: #e0e0e0;
+  border-color: #333;
+}
+body.dark-mode #docs-table th { background-color: #2d2d2d; color: #fff; border-bottom-color: #444; }
+body.dark-mode #docs-table td, body.dark-mode .approved-ul li { border-bottom-color: #333 !important; }
+body.dark-mode .approved-ul a:hover { background-color: #333; }
+body.dark-mode .sidebar button, body.dark-mode .status-row button, body.dark-mode .wins-row button, body.dark-mode .age-ov-row button, body.dark-mode .open-new-tab {
+    background-color: #2c2c2c; color: #e0e0e0; border-color: #444;
+}
+body.dark-mode .nav-user .user-menu { background-color: #2d2d2d; color: #fff; border: 1px solid #444; }
+body.dark-mode .nav-user .user-menu a, body.dark-mode .nav-user .user-menu button { color: #e0e0e0; }
+body.dark-mode .nav-user .user-menu a:hover, body.dark-mode .nav-user .user-menu button:hover { background-color: #3d3d3d; }
+
 /* Screen-reader only helper (visually hidden but available to assistive tech) */
 .sr-only{position:absolute!important;border:0!important;padding:0!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(1px,1px,1px,1px)!important;white-space:nowrap!important;clip-path:inset(50%)!important}
 *{box-sizing:border-box}
