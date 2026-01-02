@@ -532,7 +532,8 @@ function renderAdminInbox(externalFilter){
         if(d.returnReason){ adminHtml += '<div class="muted" style="font-size:11px;margin-top:4px">Reason: ' + escapeHtml(d.returnReason) + '</div>'; }
       }
     }
-    left.innerHTML = `<strong>${escapeHtml(d.controlNumber||d.control)}</strong> — ${escapeHtml(d.title||'')} <div class="muted" style="font-size:12px">Status: ${escapeHtml(d.status || '')} ${d.forwarded ? ' • Forwarded by ' + escapeHtml(d.forwardedBy || '') + ' at ' + (d.forwardedAt ? new Date(Number(d.forwardedAt)).toLocaleString() : '') : ''}${adminHtml}</div>`;
+    const chk = `<input type="checkbox" class="admin-inbox-check" value="${escapeHtml(d.controlNumber||d.control)}" style="margin-right:10px;cursor:pointer">`;
+    left.innerHTML = `<div style="display:flex;align-items:center">${chk}<div><strong>${escapeHtml(d.controlNumber||d.control)}</strong> — ${escapeHtml(d.title||'')} <div class="muted" style="font-size:12px">Status: ${escapeHtml(d.status || '')} ${d.forwarded ? ' • Forwarded by ' + escapeHtml(d.forwardedBy || '') + ' at ' + (d.forwardedAt ? new Date(Number(d.forwardedAt)).toLocaleString() : '') : ''}${adminHtml}</div></div></div>`;
     const actions = document.createElement('div');
     // view (eye icon)
     const view = document.createElement('button'); view.type = 'button'; view.className = 'icon-btn'; view.title = 'Open details'; view.setAttribute('aria-label','Open details for ' + (d.controlNumber||d.control));
@@ -922,6 +923,44 @@ function batchReceiveForwarded(){
   }catch(e){ console.error(e); alert('Error receiving documents'); }
 }
 window.batchReceiveForwarded = batchReceiveForwarded;
+
+// Batch receive selected documents in Admin Inbox
+function batchReceiveSelected(){
+  let isAdmin = (currentUserRole === 'admin');
+  try{ if(!isAdmin && (localStorage.getItem(AUTH_ROLE_KEY) === 'admin')) isAdmin = true; }catch(e){}
+  if(!isAdmin){ alert('Only admin can receive forwarded documents.'); return; }
+
+  const checks = document.querySelectorAll('.admin-inbox-check:checked');
+  if(checks.length === 0){ alert('No documents selected.'); return; }
+
+  if(!confirm('Mark ' + checks.length + ' selected document(s) as received?')) return;
+
+  const toReceive = Array.from(checks).map(c => c.value);
+  let count = 0;
+  toReceive.forEach(ctrl => {
+    const doc = docs.find(d => d.controlNumber === ctrl);
+    // Only receive if it is currently forwarded
+    if(doc && doc.forwarded){
+      doc.forwarded = false;
+      doc.forwardedHandledAt = Date.now();
+      try{ doc.forwardedHandledBy = localStorage.getItem(AUTH_KEY) || ''; }catch(e){ doc.forwardedHandledBy = ''; }
+      doc.adminStatus = 'Received';
+      doc.updatedAt = Date.now();
+      count++;
+    }
+  });
+
+  if(count > 0){
+    saveDocs();
+    renderAdminInbox();
+    try{ renderDocs(); }catch(e){}
+    try{ updateAdminInboxBadge(); }catch(e){}
+    announceStatus('Received ' + count + ' documents');
+  } else {
+    alert('Selected documents were not in a state to be received (e.g. already received or not forwarded).');
+  }
+}
+window.batchReceiveSelected = batchReceiveSelected;
 
 // Auth
 function signIn(username, password){
@@ -1831,6 +1870,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const adminPagination = document.getElementById('admin-inbox-pagination');
   if(adminFilter){ adminFilter.addEventListener('change', () => { adminInboxFilter = adminFilter.value; adminInboxPage = 1; renderAdminInbox(); }); }
   if(adminSearch){ adminSearch.addEventListener('input', debounce(() => { adminInboxQuery = adminSearch.value.trim(); adminInboxPage = 1; renderAdminInbox(); }, 250)); }
+  
+  // Admin inbox selection controls
+  const adminSelAll = document.getElementById('admin-select-all');
+  if(adminSelAll){ adminSelAll.addEventListener('change', () => { document.querySelectorAll('.admin-inbox-check').forEach(c => c.checked = adminSelAll.checked); }); }
+  const btnReceiveSel = document.getElementById('receive-selected-btn');
+  if(btnReceiveSel){ btnReceiveSel.addEventListener('click', () => { if(window.batchReceiveSelected) window.batchReceiveSelected(); }); }
 
   // delegate clicks inside admin inbox (receive)
   const adminList = document.getElementById('admin-inbox-list');
