@@ -188,24 +188,20 @@
 
 
 				<div id="results" class="card">
-					<h3>Documents</h3>
-					<table id="docs-table">
-						<thead>
-							<tr>
-								<th><input type="checkbox" id="select-all" title="Select All"></th>
-								<th>Control #</th>
-								<th>Title</th>
-								<th>Notes</th>
-								<th>Owner</th>
-								<th>Status</th>
-								<th>WINS Status</th>
-								<th>Created Date</th>
-								<th>Updated Date</th>
-								<th>Age (days)</th>							<th>Admin Status</th>								<th>Actions</th>
-							</tr>
-						</thead>
-						<tbody></tbody>
-					</table>
+					<h3>Documents Overview</h3>
+					<div style="display:flex;gap:20px;flex-wrap:wrap;padding:10px">
+						<div style="flex:1;min-width:250px">
+							<h4 style="margin-top:0">By Title</h4>
+							<div id="summary-by-title"></div>
+						</div>
+						<div style="flex:1;min-width:250px">
+							<h4 style="margin-top:0">By Owner</h4>
+							<div id="summary-by-owner"></div>
+						</div>
+					</div>
+					<div style="margin-top:12px;text-align:right;padding:10px">
+						<a href="documents_full.html" style="font-weight:bold;text-decoration:none;color:#2752a7">View Full Documents List &rarr;</a>
+					</div>
 				</div>
 			</div>
 			<aside id="sidebar" class="card">
