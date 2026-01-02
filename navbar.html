@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoring System - Navigation</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        /* Navigation Bar Container */
+        .navbar {
+            background-color: #2c3e50;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            height: 60px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        /* Links inside the navbar */
+        .navbar a.nav-link {
+            float: left;
+            color: #ecf0f1;
+            text-align: center;
+            padding: 0 15px;
+            text-decoration: none;
+            font-size: 16px;
+            line-height: 60px; /* Vertically center text */
+        }
+
+        .navbar a.nav-link:hover {
+            background-color: #34495e;
+            color: white;
+        }
+
+        /* Push the menu button to the far right */
+        .menu-container {
+            margin-left: auto;
+            position: relative;
+        }
+
+        /* The Embedded Menu Button */
+        .menu-btn {
+            background-color: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        .menu-btn:hover {
+            background-color: #c0392b;
+        }
+
+        /* Dropdown Content (Hidden by default) */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 50px; /* Position below the button */
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 4px;
+        }
+
+        .dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Class to show the dropdown */
+        .show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="#" class="nav-link"><strong>MonitorSys v3</strong></a>
+        <a href="#" class="nav-link">Dashboard</a>
+        <a href="#" class="nav-link">Alerts</a>
+        
+        <!-- Embedded Menu Button -->
+        <div class="menu-container">
+            <button class="menu-btn" onclick="toggleMenu()">Menu &#9776;</button>
+            <div id="myDropdown" class="dropdown-content">
+                <a href="#">Profile</a>
+                <a href="#">Settings</a>
+                <a href="#">Export Data</a>
+                <hr style="margin: 0; border: 0; border-top: 1px solid #eee;">
+                <a href="#" style="color: red;">Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <div style="padding: 20px;">
+        <h1>System Status</h1>
+        <p>Welcome to the monitoring dashboard.</p>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function(event) {
+            if (!event.target.matches('.menu-btn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>
