@@ -28,6 +28,7 @@
             <a class="user-btn" id="user-btn" href="profile.html"><span id="nav-avatar" class="avatar small" style="margin-right:8px"></span><span id="username-display"></span> <span id="role-badge" class="role-badge" style="display:none;margin-left:8px"></span></a>
             <div class="user-menu" id="user-menu" role="menu" aria-label="User menu">
               <a href="profile.html" id="profile-btn" role="menuitem">Profile</a>
+              <button id="dark-mode-toggle" role="menuitem">Dark Mode</button>
               <button id="logout-btn" role="menuitem">Logout</button>
             </div>
           </div>
@@ -63,10 +64,9 @@
           </div>
 
           <div class="controls">
-            <div class="left">
-              <button id="new-doc-btn">New Document</button>
-            </div>
+            <div class="left"></div>
             <div class="right">
+              <button id="new-doc-btn">New Document</button>
               <input id="search-control" placeholder="Search control number..." />
               <button id="search-btn">Search</button>
               <button id="clear-search">Clear</button>
