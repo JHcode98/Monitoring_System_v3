@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Settings</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Settings</h1>
+      <div class="navbar" role="navigation">
+        <div class="nav-left">
+          <a href="index.html" class="nav-btn">Dashboard</a>
+          <a href="documents_full.html" class="nav-btn">Full Docs</a>
+        </div>
+        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+        <div class="nav-right">
+          <div id="clock" class="clock" aria-live="polite"></div>
+          <div class="nav-user" id="nav-user">
+            <span class="user-btn" id="user-btn"><span id="nav-avatar" class="avatar small" style="margin-right:8px"></span><span id="username-display"></span></span>
+            <div class="user-menu" id="user-menu" role="menu">
+              <a href="profile.html" role="menuitem">Profile</a>
+              <a href="settings.html" role="menuitem">Settings</a>
+              <button id="logout-btn" role="menuitem">Logout</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main style="max-width:760px;margin:22px auto;padding:16px">
+      <div class="card">
+        <h2>Application Settings</h2>
+        <div style="margin-top:16px">
+            <h3>Appearance</h3>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+                <label for="settings-dark-mode" style="font-size:16px;margin:0">Enable Dark Mode</label>
+                <input type="checkbox" id="settings-dark-mode" style="width:20px;height:20px">
+            </div>
+        </div>
+        <hr>
+        <div style="margin-top:16px">
+            <h3>Data Management</h3>
+            <p class="muted">Clear all local data stored in this browser. This cannot be undone.</p>
+            <button id="clear-data-btn" style="background:#d9534f;color:white">Clear Local Data</button>
+        </div>
+      </div>
+    </main>
+    <script src="app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dm = document.getElementById('settings-dark-mode');
+            if(dm){
+                dm.checked = document.body.classList.contains('dark-mode');
+                dm.addEventListener('change', () => {
+                    const isDark = document.body.classList.toggle('dark-mode');
+                    localStorage.setItem('dms_dark_mode_v1', isDark ? '1' : '0');
+                });
+            }
+            const clearBtn = document.getElementById('clear-data-btn');
+            if(clearBtn){
+                clearBtn.addEventListener('click', () => {
+                    if(confirm('Are you sure you want to clear all local data? You will be signed out.')){
+                        localStorage.clear();
+                        window.location.href = 'index.html';
+                    }
+                });
+            }
+        });
+    </script>
+  </body>
+</html>
